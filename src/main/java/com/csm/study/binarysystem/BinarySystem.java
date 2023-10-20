@@ -1,5 +1,8 @@
 package com.csm.study.binarysystem;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BinarySystem {
 
     // 打印一个int类型的数字，32位进制的状态
@@ -16,7 +19,10 @@ public class BinarySystem {
             // a的第0位是1，第1位是1，第4位是1
             // (a & (1<<4)) == 16（不是1），说明a的第4位是1状态
              */
+            //左移i位相当于乘以2的i次方，乘法非常容易溢出
             System.out.print((num & (1 << i)) == 0 ? "0" : "1");
+            //推荐采用右移方式进行&运算，注意！！！负数的的右移不代表除2，这里只是打印一个数的二进制
+//            System.out.print((1&(num>>i))== 0 ? "0" : "1");
         }
         System.out.println();
     }
