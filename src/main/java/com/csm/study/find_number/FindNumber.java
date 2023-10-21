@@ -56,7 +56,7 @@ public class FindNumber {
         int leftIndex = 0, rightIndex = arr.length - 1, middleIndex = 0;
         while (leftIndex <= rightIndex) {
 //            middleIndex = (leftIndex + rightIndex) / 2;
-            middleIndex=(leftIndex+(rightIndex-leftIndex)>>2);
+            middleIndex=leftIndex+((rightIndex-leftIndex)>>1);
 //            log.info("mid:{}",arr[middleIndex]);
             if (arr[middleIndex] == num) {
 //                log.info("二分查找：{}在数组下标为{}的位置",num,middleIndex);
