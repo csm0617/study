@@ -151,9 +151,9 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
 
     /**
      * 找到索引为i的节点
+     *
      * @param index
-     * @return
-     * ！！！这里补充一下，为什么不把索引存放在节点中，
+     * @return ！！！这里补充一下，为什么不把索引存放在节点中，
      * 因为链表节点在内存中不是连续的，
      * 如果插入或者删除某一节点还要修改保存的索引，那么将会很麻烦
      */
@@ -170,13 +170,14 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
 
     /**
      * 获取索引为i的节点的值
+     *
      * @param index
      * @return
      */
-    public int get(int index){
+    public int get(int index) {
         Node node = findNode(index);
         //没找到就抛异常
-        if (node==null){
+        if (node == null) {
             illegalIndex(index);
         }
         return node.value;
@@ -192,11 +193,10 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
     //--------------start-------------     向索引位置添加节点    ----------------------------
 
     /**
-     *
      * @param index
      * @param value
      */
-    public void insert(int index,int value){
+    public void insert(int index, int value) {
         //直接index-1有问题，如果index是0，应该是插入到头节点的后面
         if (index == 0) {
             addFirst(value);
@@ -208,7 +208,7 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
         Node pre = findNode(index - 1);
 
         //如果前一个位置的节点为空，抛出索引异常
-        if (pre==null){
+        if (pre == null) {
             illegalIndex(index);
         }
 //        //找到了就将pre.next指针指向的位置挂到新加的节点上
@@ -217,5 +217,24 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
 //        pre.next=node;
         pre.next = new Node(value, pre.next);
     }
+
+    //--------------end-------------     向索引位置添加节点    ----------------------------
+
+
+    //--------------start-------------     删除链表的第一个节点    ----------------------------
+
+    /**
+     * 删除链表的第一个节点，不需要传参和返回值
+     */
+    public void removeFirst() {
+        //如果链表为空的情况就抛异常
+        if (head == null) {
+            illegalIndex(0);
+        }
+        //否则将head指向head.next（原本头节点head指向的就是第一个节点，head.next指向的是第二个节点）
+        head = head.next;
+    }
+    //--------------end-------------     删除链表的第一个节点     ----------------------------
+
 
 }

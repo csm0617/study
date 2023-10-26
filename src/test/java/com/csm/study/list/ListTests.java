@@ -84,4 +84,44 @@ class ListTests {
         }
     }
 
+    @Test
+    @DisplayName("测试RemoveFirst")
+    public void testRemoveFirst(){
+        SinglyLinkedList list = new SinglyLinkedList();
+        list.addLast(1);//调用addFirst方法
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        System.out.println("==========before remove===========");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+        list.removeFirst();
+        System.out.println("==========after remove===========");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+        list.removeFirst();
+        System.out.println("=================================");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+        list.removeFirst();
+        System.out.println("=================================");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+        list.removeFirst();
+        System.out.println("=================================");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+        //此时链表为空，再调用removeFirst，会抛异常
+        list.removeFirst();
+        System.out.println("=================================");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+    }
+
 }
