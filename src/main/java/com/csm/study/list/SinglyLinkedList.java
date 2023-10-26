@@ -14,7 +14,7 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
      * 当一个结构中整体和部分时包含关系，一般采用内部类的方式去定义内部，通常用private来修饰避免对外暴露
      */
 
-    private Node head = null;//（头指针），（头节点），（不放数据的哑元节点），（哨兵节点）
+    private Node head = null;//头指针
 
     @Override
     public Iterator<Integer> iterator() {
