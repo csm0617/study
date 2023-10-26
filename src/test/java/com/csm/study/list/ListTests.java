@@ -1,6 +1,7 @@
 package com.csm.study.list;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -65,6 +66,22 @@ class ListTests {
 
         System.out.println(list.get(3));
         System.out.println(list.get(5));
+    }
+
+    @Test
+    @DisplayName("在索引位置插入")
+    public void testInsert(){
+        SinglyLinkedList list = new SinglyLinkedList();
+        list.addLast(1);//调用addFirst方法
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.insert(4,5);
+        //特殊情况头插法
+        list.insert(0,0);
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
     }
 
 }

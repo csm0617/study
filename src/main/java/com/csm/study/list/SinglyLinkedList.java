@@ -177,11 +177,45 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
         Node node = findNode(index);
         //没找到就抛异常
         if (node==null){
-            throw new IllegalArgumentException(String.format("index [%d] 不合法%n",index));
+            illegalIndex(index);
         }
         return node.value;
 
     }
 
+    private static void illegalIndex(int index) {
+        throw new IllegalArgumentException(String.format("index [%d] 不合法%n", index));
+    }
+
     //  ------------end-------------    获取索引为i的的节点   ---------------------------
+
+    //--------------start-------------     向索引位置添加节点    ----------------------------
+
+    /**
+     *
+     * @param index
+     * @param value
+     */
+    public void insert(int index,int value){
+        //直接index-1有问题，如果index是0，应该是插入到头节点的后面
+        if (index == 0) {
+            addFirst(value);
+            //别忘了return否则还要继续执行下面的代码
+            return;
+        }
+
+        //找到插入位置的前一个节点
+        Node pre = findNode(index - 1);
+
+        //如果前一个位置的节点为空，抛出索引异常
+        if (pre==null){
+            illegalIndex(index);
+        }
+//        //找到了就将pre.next指针指向的位置挂到新加的节点上
+//        Node node = new Node(value, pre.next);
+//        //再将pre.next指向新加的node
+//        pre.next=node;
+        pre.next = new Node(value, pre.next);
+    }
+
 }
