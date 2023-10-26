@@ -9,6 +9,10 @@ import java.util.List;
 @SpringBootTest
 class ListTests {
 
+    /**
+     * 测试头插法节点插入
+     */
+
     @Test
     public void testFirst(){
         SinglyLinkedList list = new SinglyLinkedList();
@@ -31,6 +35,10 @@ class ListTests {
         }
     }
 
+    /**
+     * 测试尾插法节点加入
+     */
+
     @Test
     public void testLast(){
         SinglyLinkedList list = new SinglyLinkedList();
@@ -42,6 +50,21 @@ class ListTests {
         list.loop2(value->{
             System.out.println(value);
         });
+    }
+
+    /**
+     * 测试通过索引获取值
+     */
+    @Test
+    public void testGet(){
+        SinglyLinkedList list = new SinglyLinkedList();
+        list.addLast(1);//调用addFirst方法
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+
+        System.out.println(list.get(3));
+        System.out.println(list.get(5));
     }
 
 }

@@ -81,25 +81,26 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
         }
         return p;
     }
+
     //2.在最后一个节点上加入新元素
-    public void addLast(int value){
+    public void addLast(int value) {
         Node last = findLast();
         //如果last==null，也就是说链表为空
-        if (last==null){
+        if (last == null) {
             //用头插法插入第一个元素即可
             addFirst(value);
             //插完后直接return否则会继续执行下面的代码插入两个相同元素
             return;
         }
         //将最后一个元素的next指针指向新加的节点
-        last.next=new Node(value,null);
+        last.next = new Node(value, null);
     }
 
 
     //------------------------------------尾插法添加节点------------------------------------
 
 
-    //---------------------------------------遍历链表的三种方式--------------------------------------------
+    //start---------------------------------------遍历链表的三种方式--------------------------------------------
 
     /**
      * 遍历链表
@@ -116,7 +117,7 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
         }
     }
 
-    //---------------------------遍历打印链表lambada改进版--------------------------
+    //start---------------------------遍历打印链表lambada改进版--------------------------
 
     /**
      * 遍历链表
@@ -133,7 +134,7 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
         }
     }
 
-    //---------------------------遍历for循环打印链表lambada改进版--------------------------
+    //end---------------------------遍历for循环打印链表lambada改进版--------------------------
 
     /**
      * 遍历链表
@@ -144,5 +145,43 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
         }
     }
 
-    //---------------------------------------遍历链表的三种方式--------------------------------------------
+    //end---------------------------------------遍历链表的三种方式--------------------------------------------
+
+    //  ------------start-------------    获取索引为i的的节点的值   ---------------------------
+
+    /**
+     * 找到索引为i的节点
+     * @param index
+     * @return
+     * ！！！这里补充一下，为什么不把索引存放在节点中，
+     * 因为链表节点在内存中不是连续的，
+     * 如果插入或者删除某一节点还要修改保存的索引，那么将会很麻烦
+     */
+    private Node findNode(int index) {
+        int i = 0;
+        //for循环中的初始条件可以时多个的情况只能是同一种类型，否则可以将i=0定义在循环中，但是迭代条件可以是多个
+        for (Node p = head; p != null; p = p.next, i++) {
+            if (i == index) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取索引为i的节点的值
+     * @param index
+     * @return
+     */
+    public int get(int index){
+        Node node = findNode(index);
+        //没找到就抛异常
+        if (node==null){
+            throw new IllegalArgumentException(String.format("index [%d] 不合法%n",index));
+        }
+        return node.value;
+
+    }
+
+    //  ------------end-------------    获取索引为i的的节点   ---------------------------
 }
