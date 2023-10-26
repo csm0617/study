@@ -1,5 +1,7 @@
 package com.csm.study.list;
 
+import com.sun.xml.internal.txw2.output.IndentingXMLFilter;
+
 import java.util.Iterator;
 import java.util.function.Consumer;
 
@@ -237,4 +239,60 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
     //--------------end-------------     删除链表的第一个节点     ----------------------------
 
 
+    //--------------start-------------     删除链表的任意位置节点     ----------------------------
+    public void remove(int index) {
+        //index==0的时候index-1为-1,pre肯定为null不走下面的逻辑，
+        // 当Index为0的时候调用removeFirst()删除
+        if (index == 0) {
+            removeFirst();
+            //--------一定要加return-------
+            return;
+        }
+        //----------当index>0时--------
+        //根据index找到前一个节点pre
+        Node pre = findNode(index - 1);//被删节点的前一个节点
+        //如果此时输入的index不合法，pre为空
+        //eg: [ 0  1  2  3] remove index=7
+        if (pre == null) {
+            illegalIndex(index);
+        }
+        Node removeNode = pre.next;//被删节点
+        //eg: [ 1 2 ] remove index=2此时pre存在,removeNode不存在
+        if (removeNode == null) {
+            illegalIndex(index);
+        }
+        pre.next = removeNode.next;//pre.next=pre.next.next;
+    }
+    //--------------start-------------     删除链表的任意位置节点     ----------------------------
+
+    //自己写的逻辑(感觉时间复杂度有点高)
+    public void remove2(int index) {
+        //先判断索引的合法性
+        Node removeNode = findNode(index);
+        //如果删除的节点本来就不存在直接抛异常
+        if (removeNode == null) {
+            illegalIndex(index);
+        }
+
+        //如果删除的节点存在
+        //先判断是不是第一个节点
+        if (index == 0) {
+            //如果是第一个节点直接删除
+            removeFirst();
+            return;
+        }
+        //-----------不需要将pre.next置空了-------
+//        //再判断是不是最后一个节点（判断next指向的是不是空）
+//        if (removeNode.next == null) {
+//            //如果是最后一个节点
+//            //找到前一个节点pre
+//            Node pre = findNode(index - 1);
+//            //将pre的next指针指向空
+//            pre.next = null;
+//            return;
+//        }
+        //既不是头一个节点也不是最后一个节点那么
+        Node pre = findNode(index - 1);
+        pre.next = removeNode.next;
+    }
 }

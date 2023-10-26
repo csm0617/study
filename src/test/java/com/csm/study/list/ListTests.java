@@ -124,4 +124,49 @@ class ListTests {
         }
     }
 
+
+    @Test
+    @DisplayName("测试remove")
+    public void testRemove(){
+        SinglyLinkedList list = new SinglyLinkedList();
+        list.addLast(1);//调用addFirst方法
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+//        list.remove(0);
+
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+        list.remove(3);
+        System.out.println("======================");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+
+//        list.remove(6);
+    }
+
+    @Test
+    @DisplayName("测试remove2")
+    public void testRemove2(){
+        SinglyLinkedList list = new SinglyLinkedList();
+        list.addLast(1);//调用addFirst方法
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.remove2(3);
+
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+//        list.remove(3);
+        System.out.println("======================");
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
+
+//        list.remove(6);
+    }
+
 }
