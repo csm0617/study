@@ -33,7 +33,7 @@ public class DoublyLinkedListSentinel implements Iterable<Integer> {
     }
 
     /**
-     * 根据链表的索引找到节点
+     * 根据双向链表的索引找到节点
      *
      * @param index 链表索引
      * @return 找到返回节点，找不到返回null
@@ -55,7 +55,7 @@ public class DoublyLinkedListSentinel implements Iterable<Integer> {
     }
 
     /**
-     * 在双链表索引位置加入节点
+     * 在双向链表索引位置加入节点
      *
      * @param index 索引
      * @param value 插入的值
@@ -82,7 +82,7 @@ public class DoublyLinkedListSentinel implements Iterable<Integer> {
     }
 
     /**
-     * 双链表（带哨兵）头插法从头部插入
+     * 双向链表（带哨兵）头插法从头部插入
      *
      * @param value
      */
@@ -92,7 +92,7 @@ public class DoublyLinkedListSentinel implements Iterable<Integer> {
     }
 
     /**
-     * 删除双链表（带哨兵）索引位置的节点
+     * 删除双向链表（带哨兵）索引位置的节点
      *
      * @param index
      */
@@ -118,14 +118,14 @@ public class DoublyLinkedListSentinel implements Iterable<Integer> {
     }
 
     /**
-     * 双链表（带哨兵）移除链表第一个元素
+     * 双向链表（带哨兵）移除链表第一个元素
      */
     public void removeFirst() {
         remove(0);
     }
 
     /**
-     * 双链表（带哨兵）尾插法从尾部添加
+     * 双向链表（带哨兵）尾插法从尾部添加
      *
      * @param value
      */
