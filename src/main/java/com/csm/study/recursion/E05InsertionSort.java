@@ -38,7 +38,9 @@ public class E05InsertionSort {
             i--;
         }
         //跳出while循环后，此时arr[i]<t,那么i+1的位置就是arr[low]的插入位置
-        arr[i + 1] = t;
+        if (i + 1 != low){//eg：[2 5 6] 插入6时5已经比6小了不会进入到while中这是i+1=low没必要再进行一次赋值操作
+            arr[i + 1] = t;
+        }
         //2.继续递归调用
         insertion(arr, low + 1);
     }

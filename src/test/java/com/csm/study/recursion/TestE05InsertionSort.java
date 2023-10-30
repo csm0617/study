@@ -12,7 +12,6 @@ public class TestE05InsertionSort {
     @DisplayName("递归实现插入排序测试")
     public void test() {
         int[] arr = {6, 5, 4, 2, 1, 3, 8, 7, 6};
-//        E04BubbleSort.sort(arr);
         E05InsertionSort.sort(arr);
         Arrays.stream(arr).forEach(value -> {
             System.out.print(value+" ");
