@@ -3,7 +3,7 @@ package com.csm.study.recursion;
 /**
  * 逆序打印字符串（递归）
  */
-public class ReversePrintString {
+public class E02ReversePrintString {
 
     /**
      * 字符串反转打印（递归）

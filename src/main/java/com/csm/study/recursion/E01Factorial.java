@@ -1,6 +1,6 @@
 package com.csm.study.recursion;
 //递归求n的阶乘
-public class Factorial {
+public class E01Factorial {
 
 
     /**
