@@ -12,9 +12,11 @@ public class TestE04BubbleSort {
     @DisplayName("递归实现冒泡排序测试")
     public void test() {
         int[] arr = {6, 5, 4, 2, 1, 3, 8, 7, 6};
+//        E04BubbleSort.sort(arr);
         E04BubbleSort.sort(arr);
         Arrays.stream(arr).forEach(value -> {
             System.out.print(value+" ");
         });
     }
+
 }
