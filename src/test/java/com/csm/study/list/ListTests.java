@@ -169,4 +169,23 @@ class ListTests {
 //        list.remove(6);
     }
 
+    @Test
+    void testLoop3() {
+        SinglyLinkedList list = new SinglyLinkedList();
+        list.addLast(1);//调用addFirst方法
+        list.addLast(2);
+        list.addLast(3);
+        list.addLast(4);
+        list.loop3(value->{
+            System.out.println("before:"+value);
+        },value->{
+            System.out.println("before:"+value);
+        });
+    }
+
+    @Test
+    void testLoop4(){
+
+    }
+
 }

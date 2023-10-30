@@ -295,4 +295,40 @@ public class SinglyLinkedList implements Iterable<Integer> {//整体
         Node pre = findNode(index - 1);
         pre.next = removeNode.next;
     }
+
+    public void loop3(Consumer<Integer> before,Consumer<Integer> after){
+        recursion(head, before, after);
+    }
+
+//    /**
+//     * 递归遍历
+//     * @param curr
+//     */
+//    private void recursion(Node curr){
+//        if (curr==null){
+//            return;
+//        }
+//        //递归压栈
+//        System.out.println("before:"+curr.value);
+//        recursion(curr.next);
+//        //递归弹栈
+//        System.out.println("after:"+curr.value);
+//    }
+
+    /**
+     * 递归遍历
+     * @param curr
+     */
+    private void recursion(Node curr,Consumer<Integer> before,Consumer<Integer> after){
+        if (curr==null){
+            return;
+        }
+        before.accept(curr.value);
+        //递归压栈
+        recursion(curr.next,before,after);
+        after.accept(curr.value);
+        //递归弹栈
+        System.out.println("after:"+after);
+
+    }
 }
