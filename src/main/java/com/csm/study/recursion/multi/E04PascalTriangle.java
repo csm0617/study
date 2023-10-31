@@ -5,9 +5,10 @@ public class E04PascalTriangle {
     /**
      * 求杨辉三角第i行第j列元素的值
      * 行和列都从0开始
-     * @param  triangle 用来记录计算结果的二维数组（记忆法优化从O(2的n次)--->O(n的平方)）
-     * @param i 行
-     * @param j 列
+     *
+     * @param triangle 用来记录计算结果的二维数组（记忆法优化从O(2的n次)--->O(n的平方)）
+     * @param i        行
+     * @param j        列
      * @return 杨辉三角第i行第j列元素的值
      */
     public static int element(int[][] triangle, int i, int j) {
@@ -26,8 +27,10 @@ public class E04PascalTriangle {
     }
 
     public static void main(String[] args) {
-        print(5);
+//        print(5);
+        print2(5);
     }
+
     /**
      * 打印杨辉三角中的空格
      *
@@ -59,6 +62,66 @@ public class E04PascalTriangle {
                 //printf格式化输出
                 //%d 数字  %4d输出数字后4个空格  %-4d输出数字后4个空格 并左对齐
                 System.out.printf("%-4d", element(triangle, i, j));
+            }
+            //一行结束后就换行
+            System.out.println();
+        }
+    }
+
+    /**
+     *  1                    0   [ 1 0 0 0 0 0 ]
+     *  1 1                  1   [ 1 1 0 0 0 0 ]
+     *  1 2 1                2   [ 1 2 1 0 0 0 ]
+     *  1 3 3 1              3   [ 1 3 3 1 0 0 ]
+     *  1 4 6 4 1            4   [ 1 4 6 4 1 0 ]
+     */
+
+    /**
+     * eg: 打印第3行的时候，只有 第2行 有用，0行 和 1行 已经没用了
+     * 可以采用动态规划的思想
+     *
+     * @param row 一维数组
+     * @param i   行数 从0开始
+     */
+    private static void creatRow(int[] row, int i) {
+
+        if (i == 0) {
+            row[0] = 1;
+            return;
+        }
+        /**
+         * 行   row[n]的值
+         * 3   [ 1 3 3 1 0 0 ]
+         * 4   [ 1 4 6 4 1 0 ]
+         * 当i>0时，可以发现第4行的row[i]是由第3行的row[i]+row[i-1]得到的
+         * 动态的去维护更新这个数组就行
+         */
+        //将数组从最右边往最左边更新
+        //注意边界，j应该从当前行号i开始，一直到j>0,因为row[0]=1,不需要再更新了
+        for (int j = i; j > 0; j--) {
+            row[j] = row[j] + row[j - 1];
+            //以上面的为例
+            //[1 0 0 0 1 0]   由 [1 3 3 1 0 0]  1 = 0 + 1;
+            //[1 0 0 4 1 0]   由 [1 3 3 1 0 0]  1 = 1 + 3;
+            //[1 0 6 4 1 0]   由 [1 3 3 1 0 0]  1 = 3 + 3;
+            //[1 4 6 4 1 0]   由 [1 3 3 1 0 0]  1 = 3 + 1;
+            //[1 4 6 4 1 0]   由 [1 3 3 1 0 0]  1 = 3 + 1;
+        }
+    }
+
+    public static void print2(int n) {
+        //
+        int[] row = new int[n];
+        for (int i = 0; i < n; i++) {//行
+            //更新当前行数为i的一维数组
+            creatRow(row,i);
+            //打印空格
+            printSpace(n, i);
+            //取出每一行的元素打印
+            for (int j = 0; j <= i; j++) {
+                //printf格式化输出
+                //%d 数字  %4d输出数字后4个空格  %-4d输出数字后4个空格 并左对齐
+                System.out.printf("%-4d",row[j]);
             }
             //一行结束后就换行
             System.out.println();
