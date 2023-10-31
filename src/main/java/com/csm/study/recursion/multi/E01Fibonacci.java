@@ -1,11 +1,11 @@
-package com.csm.study.recursion;
+package com.csm.study.recursion.multi;
 
 import java.util.Arrays;
 
 /**
  * 递归求斐波那契的第n项（多路递归）
  */
-public class E06Fibonacci {
+public class E01Fibonacci {
     public static int f(int n) {
         if (n == 0) {
             return 0;

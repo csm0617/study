@@ -1,9 +1,9 @@
-package com.csm.study.recursion;
+package com.csm.study.recursion.multi;
 
 /**
  * 兔子问题:求第n个月兔子的数量
  */
-public class E07Rabbit {
+public class E02Rabbit {
 
     public static int rabbit(int n) {
         if (n == 0) {
