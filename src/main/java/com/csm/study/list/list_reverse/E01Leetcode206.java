@@ -8,11 +8,13 @@ import com.csm.study.datastructure.ListNode;
 public class E01Leetcode206 {
 
     /**
+     * 方法1
      * 原链表的遍历的结果以头插的方式插入新链表
+     *
      * @param o1
      * @return
      */
-    public ListNode reverseList(ListNode o1) {
+    public ListNode reverseList1(ListNode o1) {
         ListNode n1 = null;
         ListNode p = o1;
         while (p != null) {
@@ -20,6 +22,52 @@ public class E01Leetcode206 {
             p = p.next;
         }
         return n1;
+    }
+
+    /**
+     * 方法二
+     * 链表反转：原链表从头部移除，新链表从头部添加
+     * @param head
+     * @return
+     */
+
+    public ListNode reverseList(ListNode head) {
+        list list1 = new list(head);
+        list list2 = new list(null);
+        while (true){
+            ListNode first = list1.removeFirst();
+            //当first为空时说明list1已经被移除完了
+            if (first==null){
+                break;
+            }
+            list2.addFirst(first);
+        }
+        return list2.head;
+    }
+
+    //容器类
+    static class list {
+        ListNode head;
+
+        public list(ListNode head) {
+            this.head = head;
+        }
+
+        //从头部添加
+        public void addFirst(ListNode first) {
+            //head==null时也成立，头部添加就是 将新加节点的next指向head，再将head指向新加的节点
+            first.next = head;
+            head = first;
+        }
+
+        public ListNode removeFirst(){
+
+            ListNode first = head;
+            if (first!=null){
+                head = first.next;
+            }
+            return first;
+        }
     }
 
 
