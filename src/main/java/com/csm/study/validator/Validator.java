@@ -37,10 +37,12 @@ public class Validator {
             int[] selectArray = copyArray(arr);
             int[] bubbleArray = copyArray(arr);
             int[] insertArray = copyArray(arr);
+            int[] bubbleArray2 = copyArray(arr);
             selectionSort(selectArray);
             bubbleSort(bubbleArray);
             insertSort(insertArray);
-            if (!sameArray(selectArray,bubbleArray)||!sameArray(insertArray,bubbleArray)){
+            bubbleSort2(bubbleArray2);
+            if (!sameArray(selectArray,bubbleArray)||!sameArray(insertArray,bubbleArray)||!sameArray(insertArray,bubbleArray2)){
                 log.error("出错了！");
                 //-----------------------------------------------------------
                 // 当有错了
@@ -49,9 +51,10 @@ public class Validator {
                 // 可能要把例子带入，每个方法，去debug！
                 //-----------------------------------------------------------
                 log.info("原始数组{}",arr);
-                log.info("selectArray:{}",selectArray);
-                log.info("bubbleArray:{}",bubbleArray);
-                log.info("insertArray:{}",insertArray);
+//                log.info("selectArray:{}",selectArray);
+//                log.info("bubbleArray:{}",bubbleArray);
+//                log.info("insertArray:{}",insertArray);
+                log.info("bubbleArray2:{}",bubbleArray2);
             }
 
         }
@@ -200,5 +203,21 @@ public class Validator {
 
         }
     }
-
+    //冒泡新写法
+    public static void bubbleSort2(int[] arr) {
+        int n = arr.length;
+        int end = n - 1, i = 0;
+        while (end>0){
+            if (arr[i]>arr[i+1]){
+                swap(arr,i,i+1);
+            }
+            if (i<end-1){
+                i++;
+            }else{
+                end--;
+                i=0;
+            }
+        }
+//        log.info("{}",arr);
+    }
 }

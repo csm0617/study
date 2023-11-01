@@ -1,6 +1,8 @@
 package com.csm.study.select_bubble_insert;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SelectBubbleInsert {
 
     //交换数组中i和j两个位置的数
@@ -66,6 +68,24 @@ public class SelectBubbleInsert {
         }
     }
 
+    //冒泡新写法
+    public static void bubbleSort2(int[] arr) {
+        int n = arr.length;
+        int end = n - 1, i = 0;
+        while (end>0){
+            if (arr[i]>arr[i+1]){
+                swap(arr,i,i+1);
+            }
+            if (i<end-1){
+                i++;
+            }else{
+                end--;
+                i=0;
+            }
+        }
+        log.info("{}",arr);
+    }
+
     //插入排序
     public static void insertSort(int[] arr) {
         //极端条件
@@ -94,7 +114,7 @@ public class SelectBubbleInsert {
             //0 ~ i-1的位置上有序了，新来的数是[i]，往左看
             for (int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
                 //满足拆入的数j+1比前一个数j小时就要发生交换
-                swap(arr,j,j+1);
+                swap(arr, j, j + 1);
             }
 
         }
