@@ -27,22 +27,47 @@ public class E01Leetcode206 {
     /**
      * 方法二
      * 链表反转：原链表从头部移除，新链表从头部添加
+     *
      * @param head
      * @return
      */
 
-    public ListNode reverseList(ListNode head) {
+    public ListNode reverseList2(ListNode head) {
         list list1 = new list(head);
         list list2 = new list(null);
-        while (true){
+        while (true) {
             ListNode first = list1.removeFirst();
             //当first为空时说明list1已经被移除完了
-            if (first==null){
+            if (first == null) {
                 break;
             }
             list2.addFirst(first);
         }
         return list2.head;
+    }
+
+    /**
+     * 方法三
+     * 链表反转：先递归找到最后一个节点，作为头节点返回
+     *         在每次归的时候，将 当前节点 的 下一个节点的next指针 ，指向当前节点（p.next.next->p） 5->4->5
+     *         再将p->null 避免环形指向 5->4->null
+     * @param p
+     * @return
+     */
+    public ListNode reverseList(ListNode p) {
+        //p的next指向空了，说明p就是最后一个节点
+        if (p == null || p.next == null) {
+            return p;
+        }
+        //递的时候找到最后一个节点
+        ListNode last = reverseList(p.next);
+        //归的时候p.next.next  也就是当前节点p的下一个节点的next指向p
+        p.next.next = p;
+        //eg[ 1 2 3 4 5] 当p.next==null时候递归return p了，能走到p.next.next = p时，p指向的是4,p.next指向的是5
+        //此时5->4 , 4->5 循环了，所以每层 归 的 时候 4->null ,也就是让p->null
+        p.next = null;
+        //将最后一个节点作为头指针返回
+        return last;
     }
 
     //容器类
@@ -60,10 +85,10 @@ public class E01Leetcode206 {
             head = first;
         }
 
-        public ListNode removeFirst(){
+        public ListNode removeFirst() {
 
             ListNode first = head;
-            if (first!=null){
+            if (first != null) {
                 head = first.next;
             }
             return first;
