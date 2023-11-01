@@ -49,25 +49,57 @@ public class E01Leetcode206 {
     /**
      * 方法三
      * 链表反转：先递归找到最后一个节点，作为头节点返回
-     *         在每次归的时候，将 当前节点 的 下一个节点的next指针 ，指向当前节点（p.next.next->p） 5->4->5
-     *         再将p->null 避免环形指向 5->4->null
+     * 在每次归的时候，将 当前节点 的 下一个节点的next指针 ，指向当前节点（p.next.next->p） 5->4->5
+     * 再将p->null 避免环形指向 5->4->null
+     *
      * @param p
      * @return
      */
-    public ListNode reverseList(ListNode p) {
+    public ListNode reverseList3(ListNode p) {
         //p的next指向空了，说明p就是最后一个节点
         if (p == null || p.next == null) {
             return p;
         }
         //递的时候找到最后一个节点
-        ListNode last = reverseList(p.next);
+        ListNode last = reverseList3(p.next);
         //归的时候p.next.next  也就是当前节点p的下一个节点的next指向p
-        p.next.next = p;
         //eg[ 1 2 3 4 5] 当p.next==null时候递归return p了，能走到p.next.next = p时，p指向的是4,p.next指向的是5
         //此时5->4 , 4->5 循环了，所以每层 归 的 时候 4->null ,也就是让p->null
+        p.next.next = p;//这两行代码将相邻两个节点逆序
         p.next = null;
         //将最后一个节点作为头指针返回
         return last;
+    }
+
+    /**
+     * 方法四
+     * 将o1和n1都指向旧链表的头部，定义o2来指向旧链表的第二个元素
+     * 不断更新o2,将o2从旧链表中移到新链表的头部n1加入
+     * 直到o2为null，说明旧链表走到头了
+     * @param o1 旧链表头指针
+     * @return n1新链表头指针
+     */
+    private ListNode reverseList(ListNode o1) {
+        //边界情况：当链表中没有元素，或者只有一个元素时
+        if (o1 == null || o1.next == null) {
+            //直接返回头节点
+            return o1;
+        }
+        //o1始终指向旧链表的头，定义o2来指向旧链表的第2个元素
+        ListNode o2 = o1.next;
+        //将新链表的头部n1也指向旧链表的头部o1
+        ListNode n1 = o1;
+        while (o2   != null) {
+            //在旧链表中移除o2
+            o1.next = o2.next;
+            //在n1头部加入o2
+            o2.next = n1;
+            //并将n1指向头部
+            n1 = o2;
+            //更新o2为旧链表的第二个元素
+            o2 = o1.next;
+        }
+        return n1;
     }
 
     //容器类
@@ -108,5 +140,6 @@ public class E01Leetcode206 {
         ListNode n1 = e01Leetcode206.reverseList(o1);
         System.out.println(n1);
     }
+
 
 }
