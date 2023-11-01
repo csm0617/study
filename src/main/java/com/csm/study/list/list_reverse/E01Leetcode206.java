@@ -76,10 +76,11 @@ public class E01Leetcode206 {
      * 将o1和n1都指向旧链表的头部，定义o2来指向旧链表的第二个元素
      * 不断更新o2,将o2从旧链表中移到新链表的头部n1加入
      * 直到o2为null，说明旧链表走到头了
+     *
      * @param o1 旧链表头指针
      * @return n1新链表头指针
      */
-    private ListNode reverseList(ListNode o1) {
+    private ListNode reverseList4(ListNode o1) {
         //边界情况：当链表中没有元素，或者只有一个元素时
         if (o1 == null || o1.next == null) {
             //直接返回头节点
@@ -89,7 +90,7 @@ public class E01Leetcode206 {
         ListNode o2 = o1.next;
         //将新链表的头部n1也指向旧链表的头部o1
         ListNode n1 = o1;
-        while (o2   != null) {
+        while (o2 != null) {
             //在旧链表中移除o2
             o1.next = o2.next;
             //在n1头部加入o2
@@ -98,6 +99,30 @@ public class E01Leetcode206 {
             n1 = o2;
             //更新o2为旧链表的第二个元素
             o2 = o1.next;
+        }
+        return n1;
+    }
+
+    /**
+     * 方法五
+     * 方法二的面向过程的实现
+     * @param o1
+     * @return
+     */
+    private ListNode reverseList(ListNode o1) {
+        if (o1 == null || o1.next == null) {
+            return o1;
+        }
+        ListNode n1 = null;
+        while (o1 != null) {
+            //记录o1的下一位置
+            ListNode o2 = o1.next;
+            //将o1.next指向n1（o1插入n1的头部）
+            o1.next = n1;
+            //再将n1指向 o1 （更新头指针）
+            n1 = o1;
+            //更新o1指向o2记录的位置
+            o1 = o2;
         }
         return n1;
     }
