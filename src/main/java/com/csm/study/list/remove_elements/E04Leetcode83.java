@@ -55,10 +55,10 @@ public class E04Leetcode83 {
         //如果p1和p1的下一个节点p1.next相等
         if (p1.val == p1.next.val) {
             //那么就不要p1了，直接返回p1.next的去重结果
-            return deleteDuplicates(p1.next);
+            return deleteDuplicates1(p1.next);
         } else {
             //如果不相等，那么应该把p1.next的去重结果赋值给p1.next
-            p1.next=deleteDuplicates(p1.next);
+            p1.next=deleteDuplicates1(p1.next);
             //最后返回p1
             return p1;
         }
