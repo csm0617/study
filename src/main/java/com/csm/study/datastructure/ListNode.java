@@ -1,8 +1,11 @@
 package com.csm.study.datastructure;
 
+import com.csm.study.list.SinglyLinkedSentinel;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 //@ToString
+@NoArgsConstructor
 public class ListNode {
     public int val;
     public ListNode next;
@@ -10,6 +13,20 @@ public class ListNode {
     public ListNode(int val, ListNode next) {
         this.val = val;
         this.next = next;
+    }
+
+    public ListNode of(int[] list){
+        if (list==null){
+            return null;
+        }
+        ListNode s = new ListNode(-1, null);
+        ListNode p=s;
+        for (int i = 0; i < list.length; i++) {
+            ListNode node = new ListNode(list[i], null);
+            p.next=node;
+            p=node;
+        }
+        return s.next;
     }
 
     @Override
