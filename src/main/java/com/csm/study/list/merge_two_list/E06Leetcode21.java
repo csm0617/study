@@ -75,11 +75,9 @@ public class E06Leetcode21 {
     }
 
     public static void main(String[] args) {
-        int[] list1 = {1, 2, 2, 4, 6, 7, 9};
-        int[] list2 = {1, 2, 3, 3, 5, 8, 10, 11, 15};
-        ListNode old1 = new ListNode().of(list1);
+        ListNode old1 = new ListNode().of(1, 2, 2, 4, 6, 7, 9);
         System.out.println(old1);
-        ListNode old2 = new ListNode().of(list2);
+        ListNode old2 = new ListNode().of(1, 2, 3, 3, 5, 8, 10, 11, 15);
         System.out.println(old2);
         System.out.println("merge two list:");
         System.out.println(new E06Leetcode21().mergeTwoLists(old1, old2));

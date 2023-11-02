@@ -15,14 +15,14 @@ public class ListNode {
         this.next = next;
     }
 
-    public ListNode of(int[] list){
-        if (list==null){
+    public ListNode of(int... elements){
+        if (elements==null){
             return null;
         }
         ListNode s = new ListNode(-1, null);
         ListNode p=s;
-        for (int i = 0; i < list.length; i++) {
-            ListNode node = new ListNode(list[i], null);
+        for (int i = 0; i < elements.length; i++) {
+            ListNode node = new ListNode(elements[i], null);
             p.next=node;
             p=node;
         }

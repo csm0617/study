@@ -78,14 +78,10 @@ public class E07Leetcode23 {
     }
 
     public static void main(String[] args) {
-        int[] list1 = {1, 2, 2, 4, 6, 7, 9};
-        int[] list2 = {1, 2, 3, 3, 5, 8, 10, 11, 15};
-        int[] list3 = {1, 3, 4, 5, 6, 10, 12, 13, 18};
-        int[] list4 = {16, 21, 22, 24};
-        ListNode old1 = new ListNode().of(list1);
-        ListNode old2 = new ListNode().of(list2);
-        ListNode old3 = new ListNode().of(list3);
-        ListNode old4 = new ListNode().of(list4);
+        ListNode old1 = new ListNode().of(1, 2, 2, 4, 6, 7, 9);
+        ListNode old2 = new ListNode().of(1, 2, 3, 3, 5, 8, 10, 11, 15);
+        ListNode old3 = new ListNode().of(1, 3, 4, 5, 6, 10, 12, 13, 18);
+        ListNode old4 = new ListNode().of(16, 21, 22, 24);
         ListNode[] lists = {old1, old2, old3, old4};
         System.out.println(new E07Leetcode23().mergeKLists(lists));
     }
