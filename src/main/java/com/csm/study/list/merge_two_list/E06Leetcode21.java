@@ -11,11 +11,12 @@ import java.util.List;
 public class E06Leetcode21 {
     /**
      * 合并两个有序链表
+     *
      * @param p1 链表1
      * @param p2 链表2
      * @return 新链表的头节点
      */
-    public ListNode mergeTwoLists(ListNode p1, ListNode p2) {
+    public ListNode mergeTwoLists1(ListNode p1, ListNode p2) {
         //合并后放入新链表中，s为新链表的哨兵节点
         ListNode s = new ListNode(-1, null);
         //因为在两个链表都没走到null的时候，节点一个个加的
@@ -23,7 +24,7 @@ public class E06Leetcode21 {
         ListNode p = s;
         //当两个链表都没走到空时
         while (p1 != null && p2 != null) {
-            //每次将两个链表的节点中的小的一个加入新链表
+            //谁小谁就链入新链表
             if (p1.val < p2.val) {
                 p.next = p1;
                 p1 = p1.next;
@@ -43,6 +44,34 @@ public class E06Leetcode21 {
         }
         //返回新链表的头
         return s.next;
+    }
+
+    /**
+     * 合并两个有序链表
+     *
+     * @param p1 链表1
+     * @param p2 链表2
+     * @return 新链表的头节点
+     */
+    public ListNode mergeTwoLists(ListNode p1, ListNode p2) {
+        //结束递归的条件：
+        //当p1或者p2其中一个走到null的时候
+        //返回另外一个不为null的链表
+        if (p1 == null) {
+            return p2;
+        }
+        if (p2 == null) {
+            return p1;
+        }
+        if (p1.val < p2.val) {//谁小谁返回
+            //在返回之前先带上，下一次递归的返回结果结果
+            p1.next = mergeTwoLists(p1.next, p2);
+            return p1;
+        }else {
+            p2.next = mergeTwoLists(p1, p2.next);
+            return p2;
+        }
+
     }
 
     public static void main(String[] args) {
