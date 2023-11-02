@@ -9,10 +9,11 @@ public class E04Leetcode83 {
     /**
      * 删除有序链表中重复的元素
      * 注意是 有序链表
+     *
      * @param head
      * @return
      */
-    public ListNode deleteDuplicate(ListNode head) {
+    public ListNode deleteDuplicates(ListNode head) {
 
         //链表节点数<2时（当链表为空或者链表只有1个元素时，直接返回头节点）
         if (head == null || head.next == null) {
@@ -36,6 +37,34 @@ public class E04Leetcode83 {
         return head;
     }
 
+    /**
+     * 递归删除有序链表中的重复元素
+     *
+     * @param head
+     * @return
+     */
+    public ListNode deleteDuplicates1(ListNode head) {
+
+        //链表节点数<2时
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        //链表节点数>=2时
+        ListNode p1 = head;
+        //如果p1和p1的下一个节点p1.next相等
+        if (p1.val == p1.next.val) {
+            //那么就不要p1了，直接返回p1.next的去重结果
+            return deleteDuplicates(p1.next);
+        } else {
+            //如果不相等，那么应该把p1.next的去重结果赋值给p1.next
+            p1.next=deleteDuplicates(p1.next);
+            //最后返回p1
+            return p1;
+        }
+
+    }
+
     public static void main(String[] args) {
         ListNode o5 = new ListNode(5, null);
         ListNode o4 = new ListNode(4, o5);
@@ -43,6 +72,6 @@ public class E04Leetcode83 {
         ListNode o2 = new ListNode(2, o3);
         ListNode o1 = new ListNode(1, o2);
         System.out.println(o1);
-        System.out.println(new E04Leetcode83().deleteDuplicate(o1));
+        System.out.println(new E04Leetcode83().deleteDuplicates1(o1));
     }
 }
