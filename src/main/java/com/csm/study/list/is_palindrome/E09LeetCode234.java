@@ -56,7 +56,54 @@ public class E09LeetCode234 {
         return n1;
     }
 
+    /**
+     * 在上一版的基础上改进
+     * @param head
+     * @return
+     */
+
     public boolean isPalindrome(ListNode head) {
+
+        ListNode p1 = head;//慢指针
+        ListNode p2 = head;//快指针
+        ListNode n1 = null;//翻转链表的头节点
+        ListNode o1 = head;
+        /*
+         * 找到中点的同时将中点以前的链表反转
+         */
+        while (p2 != null && p2.next != null) {
+            p2 = p2.next.next;
+            p1 = p1.next;
+            //头插法将o1加入n1
+            o1.next = n1;
+            n1 = o1;
+            o1 = p1;
+        }
+        //找到p1是中点
+        System.out.println(n1);
+        if (p2 != null) {//说明是奇数个节点，需要后移一位再开始比较
+            p1 = p1.next;
+        }
+        System.out.println(p1);
+        //回文比较
+        while (p1 != null) {
+            if (p1.val != n1.val) {
+                return false;
+            }
+            p1 = p1.next;
+            n1 = n1.next;
+        }
+        return true;
+    }
+
+
+    /**
+     * 判断是不是回文链表
+     *
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome1(ListNode head) {
         ListNode middleNode = middleNode(head);
         ListNode reverse = reverse(middleNode);
         while (reverse != null) {
@@ -70,11 +117,9 @@ public class E09LeetCode234 {
     }
 
     public static void main(String[] args) {
-        ListNode o1 = new ListNode().of(1, 2, 3, 4, 5, 6, 7, 8, 9);
-        ListNode middle = new E09LeetCode234().middleNode(o1);
-        System.out.println(middle);
-        ListNode n1 = new E09LeetCode234().reverse(middle);
-        System.out.println(n1);
+        ListNode o1 = new ListNode().of(1, 2, 2, 4, 4, 2, 2, 1);
+        System.out.println(new E09LeetCode234().isPalindrome(o1));
+
         ListNode o2 = new ListNode().of(1, 2, 2, 4, 5, 4, 2, 2, 1);
         System.out.println(new E09LeetCode234().isPalindrome(o2));
 
