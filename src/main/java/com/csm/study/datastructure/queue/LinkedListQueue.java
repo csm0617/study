@@ -26,13 +26,23 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
 
     //--------------初始化--------------
     //创建哨兵，并将head指向哨兵
-    Node<E> head = new Node<>(null, null);
+    private Node<E> head = new Node<>(null, null);
     //将尾tail也指向哨兵
-    Node<E> tail = head;
-
+    private Node<E> tail = head;
+    //节点数
+    private int size;
+    //队列容量（默认最大）
+    private int capacity=Integer.MAX_VALUE;
     //构造方法来初始化构成环形（上一步head和tail都指向哨兵了）
-    public LinkedListQueue() {
+    {
         tail.next = head;
+    }
+
+    public LinkedListQueue(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public LinkedListQueue() {
     }
 
     /**
@@ -43,6 +53,10 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public boolean offer(E value) {
+        //先判断队列是否满了
+        if (isFull()){
+            return false;
+        }
         //加入节点
         //因为是环形链表，且因为队列中新加的节点都是在尾添加，所以尾部节点的next应该指向head
         Node<E> added = new Node<>(value, head);
@@ -50,6 +64,7 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
         tail.next = added;
         //更新队列的尾指针指向新加节点
         tail = added;
+        size++;
         return true;
     }
 
@@ -72,6 +87,7 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
         if (first.next==head){
             tail.next=head;
         }
+        size--;
         return first.value;
     }
 
@@ -101,6 +117,16 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
         // 因为刚开始时队列为空，头尾指针都指向哨兵节点,head==tail
         // 当有元素加入队列时，尾指针开始移动这时头尾指针才不相等
         return head==tail;
+    }
+
+    /**
+     * 检查队列是否满了
+     *
+     * @return 满了返回true, 没满返回false
+     */
+    @Override
+    public boolean isFull() {
+        return size == capacity;
     }
 
     /**

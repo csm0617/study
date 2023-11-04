@@ -49,4 +49,18 @@ public class TestLinkedListQueue {
             System.out.printf("%-4d",integer);
         }
     }
+    @Test
+    @DisplayName("队列是否满了")
+    public void isFull(){
+        LinkedListQueue<Integer> queue = new LinkedListQueue<>(3);
+        queue.offer(1);
+        queue.offer(2);
+        queue.offer(3);
+        queue.offer(4);
+        queue.offer(5);
+        for (Integer integer : queue) {
+            System.out.printf("%-4d",integer);
+        }
+
+    }
 }
