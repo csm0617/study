@@ -80,7 +80,9 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        // 因为刚开始时队列为空，头尾指针都指向哨兵节点,head==tail
+        // 当有元素加入队列时，尾指针开始移动这时头尾指针才不相等
+        return head==tail;
     }
 
     /**
