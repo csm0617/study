@@ -60,7 +60,19 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public E poll() {
-        return null;
+        if (isEmpty()){
+            return null;
+        }
+        Node<E> first = head.next;
+        //从队头移除first
+        head.next=first.next;
+        //当队列中只有一个元素的时候，从队头移除元素后
+        //还需要
+        //将尾指针指向head(指向哨兵)(恢复到空队列初始状态)
+        if (first.next==head){
+            tail.next=head;
+        }
+        return first.value;
     }
 
     /**
@@ -70,7 +82,13 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public E peek() {
-        return null;
+        //先判空
+        if (isEmpty()){
+            return null;
+        }
+        //head指针的下一个就是对头元素
+        Node<E> first = head.next;
+        return first.value;
     }
 
     /**

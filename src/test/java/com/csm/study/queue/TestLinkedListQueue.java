@@ -17,4 +17,36 @@ public class TestLinkedListQueue {
             System.out.printf("%-4d",integer);
         }
     }
+
+    @Test
+    @DisplayName("移除队列的头元素")
+    public void poll(){
+        LinkedListQueue<Integer> queue = new LinkedListQueue<>();
+        queue.offer(1);
+        queue.offer(2);
+        queue.offer(3);
+        queue.offer(4);
+        queue.offer(5);
+        Integer remove = queue.poll();
+        System.out.println(remove);
+        for (Integer integer : queue) {
+            System.out.printf("%-4d",integer);
+        }
+    }
+
+    @Test
+    @DisplayName("获取队头元素")
+    public void peek(){
+        LinkedListQueue<Integer> queue = new LinkedListQueue<>();
+        queue.offer(1);
+        queue.offer(2);
+        queue.offer(3);
+        queue.offer(4);
+        queue.offer(5);
+        Integer first = queue.peek();
+        System.out.println(first);
+        for (Integer integer : queue) {
+            System.out.printf("%-4d",integer);
+        }
+    }
 }
