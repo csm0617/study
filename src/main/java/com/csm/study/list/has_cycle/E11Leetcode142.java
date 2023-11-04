@@ -7,7 +7,7 @@ import com.csm.study.datastructure.ListNode;
  * 龟兔赛跑算法，也被称为Floyd's Tortoise and Hare Algorithm
  * 是一种用于检测链表中是否存在环的快慢指针算法。
  */
-public class E10Leetcode142 {
+public class E11Leetcode142 {
     public ListNode detectCycle(ListNode head) {
         ListNode h = head;//兔  快指针
         ListNode t = head;//龟  慢指针
@@ -29,5 +29,9 @@ public class E10Leetcode142 {
             }
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+
     }
 }
