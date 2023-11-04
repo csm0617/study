@@ -1,6 +1,6 @@
-package com.csm.study.list.is_palindrome;
+package com.csm.study.datastructure.list.is_palindrome;
 
-import com.csm.study.datastructure.ListNode;
+import com.csm.study.datastructure.list.structure.ListNode;
 
 /**
  * 判断回文链表

@@ -1,6 +1,6 @@
-package com.csm.study.list.has_cycle;
+package com.csm.study.datastructure.list.has_cycle;
 
-import com.csm.study.datastructure.ListNode;
+import com.csm.study.datastructure.list.structure.ListNode;
 
 /**
  * leetcode141题 判断链表中是否存在环

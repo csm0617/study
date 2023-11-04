@@ -1,6 +1,6 @@
-package com.csm.study.list.middle_node;
+package com.csm.study.datastructure.list.middle_node;
 
-import com.csm.study.datastructure.ListNode;
+import com.csm.study.datastructure.list.structure.ListNode;
 
 public class E08Leetcode876 {
 

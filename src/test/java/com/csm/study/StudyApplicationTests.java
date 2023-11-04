@@ -1,6 +1,6 @@
 package com.csm.study;
 
-import com.csm.study.list.SinglyLinkedList;
+import com.csm.study.datastructure.list.SinglyLinkedList;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

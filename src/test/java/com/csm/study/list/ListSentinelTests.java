@@ -1,6 +1,6 @@
 package com.csm.study.list;
 
-import org.junit.jupiter.api.Assertions;
+import com.csm.study.datastructure.list.SinglyLinkedSentinel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,5 +1,6 @@
 package com.csm.study.list;
 
+import com.csm.study.datastructure.list.DoublyLinkedListSentinel;
 import org.junit.jupiter.api.Test;
 
 public class DoublyLinkedListSentinelTest {

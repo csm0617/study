@@ -1,9 +1,6 @@
-package com.csm.study.list.merge_two_list;
+package com.csm.study.datastructure.list.merge_two_list;
 
-import com.csm.study.datastructure.ListNode;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.csm.study.datastructure.list.structure.ListNode;
 
 /**
  * 合并多个有序链表leetcode23

@@ -1,4 +1,4 @@
-package com.csm.study.list;
+package com.csm.study.datastructure.list;
 
 import com.sun.xml.internal.txw2.output.IndentingXMLFilter;
 

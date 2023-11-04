@@ -1,6 +1,6 @@
-package com.csm.study.list.remove_elements;
+package com.csm.study.datastructure.list.remove_elements;
 
-import com.csm.study.datastructure.ListNode;
+import com.csm.study.datastructure.list.structure.ListNode;
 
 /**
  * 删除有序链表的重复元素

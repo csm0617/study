@@ -1,8 +1,6 @@
-package com.csm.study.datastructure;
+package com.csm.study.datastructure.list.structure;
 
-import com.csm.study.list.SinglyLinkedSentinel;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 //@ToString
 @NoArgsConstructor

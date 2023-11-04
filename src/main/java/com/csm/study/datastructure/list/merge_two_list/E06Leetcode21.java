@@ -1,9 +1,6 @@
-package com.csm.study.list.merge_two_list;
+package com.csm.study.datastructure.list.merge_two_list;
 
-import com.csm.study.datastructure.ListNode;
-import com.csm.study.list.list_reverse.E01Leetcode206;
-
-import java.util.List;
+import com.csm.study.datastructure.list.structure.ListNode;
 
 /**
  * leetcode21合并两个有序链表

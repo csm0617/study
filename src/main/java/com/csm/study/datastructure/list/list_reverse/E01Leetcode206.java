@@ -1,6 +1,6 @@
-package com.csm.study.list.list_reverse;
+package com.csm.study.datastructure.list.list_reverse;
 
-import com.csm.study.datastructure.ListNode;
+import com.csm.study.datastructure.list.structure.ListNode;
 
 /**
  * 链表反转（通过构造一个）
