@@ -5,20 +5,19 @@ import com.csm.study.datastructure.queue.structure.Queue;
 import java.util.Iterator;
 
 /**
- * 数组实现环形队列（size来记录元素的个数）
+ * 数组实现环形队列（数组的最后一位不存数据）
  *
  * @param <E>
  */
-public class ArrayQueue2<E> implements Queue<E>, Iterable<E> {
+public class ArrayQueue1<E> implements Queue<E>, Iterable<E> {
 
     private E[] array;
-    private int head = 0;//头指针
-    private int tail = 0;//尾指针
-    private int size = 0;//元素个数
+    private int head;//头指针
+    private int tail;//尾指针
 
     @SuppressWarnings("all")
-    public ArrayQueue2(int capacity) {
-        array = (E[]) new Object[capacity];
+    public ArrayQueue1(int capacity) {
+        array = (E[]) new Object[capacity + 1];
     }
 
     /**
@@ -37,7 +36,6 @@ public class ArrayQueue2<E> implements Queue<E>, Iterable<E> {
         array[tail] = value;
         //更新尾指针指向
         tail = (tail + 1) % array.length;
-        size++;
         return true;
     }
 
@@ -56,7 +54,6 @@ public class ArrayQueue2<E> implements Queue<E>, Iterable<E> {
         E value = array[head];
         //再更新head指针
         head = (head + 1) % array.length;
-        size--;
         return value;
     }
 
@@ -82,7 +79,7 @@ public class ArrayQueue2<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return head == tail;
     }
 
     /**
@@ -92,7 +89,7 @@ public class ArrayQueue2<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public boolean isFull() {
-        return size == array.length;
+        return (tail + 1) % array.length == head;
     }
 
     /**
@@ -104,18 +101,15 @@ public class ArrayQueue2<E> implements Queue<E>, Iterable<E> {
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             int p = head;
-            int count = 0;
-
             @Override
             public boolean hasNext() {
-                return count < size;
+                return p!=tail;
             }
 
             @Override
             public E next() {
                 E value = array[p];
-                p = (p + 1) % array.length;
-                count++;
+                p=(p+1)%array.length;
                 return value;
             }
         };

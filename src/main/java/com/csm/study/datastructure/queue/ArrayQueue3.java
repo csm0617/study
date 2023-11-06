@@ -5,20 +5,28 @@ import com.csm.study.datastructure.queue.structure.Queue;
 import java.util.Iterator;
 
 /**
- * 数组实现环形队列（数组的最后一位不存数据）
+ * 数组实现环形队列（head和tail只计数,不作为索引来用）
  *
  * @param <E>
  */
-public class ArrayQueue<E> implements Queue<E>, Iterable<E> {
+public class ArrayQueue3<E> implements Queue<E>, Iterable<E> {
 
     private E[] array;
-    private int head;//头指针
-    private int tail;//尾指针
+    private int head = 0;//头指针
+    private int tail = 0;//尾指针
 
     @SuppressWarnings("all")
-    public ArrayQueue(int capacity) {
-        array = (E[]) new Object[capacity + 1];
+    public ArrayQueue3(int capacity) {
+        array = (E[]) new Object[capacity];
     }
+
+    /**
+     *  head和tail都只用来计数,不作为索引，真正作为索引的是head%array.length
+     *  eg: arr.length =3
+     *  [ 0 1 2 ]
+     *  //继续加tail=3,明显越界了，用tail%arr.length来作为索引
+     *  3%3=0  所以需要更新的是 arr[0]
+     */
 
     /**
      * 向队列尾插入值
@@ -33,9 +41,9 @@ public class ArrayQueue<E> implements Queue<E>, Iterable<E> {
             return false;
         }
         //在尾指针处添加
-        array[tail] = value;
+        array[tail % array.length] = value;
         //更新尾指针指向
-        tail = (tail + 1) % array.length;
+        tail++;
         return true;
     }
 
@@ -51,9 +59,9 @@ public class ArrayQueue<E> implements Queue<E>, Iterable<E> {
             return null;
         }
         //不为空，拿到队头元素
-        E value = array[head];
+        E value = array[head % array.length];
         //再更新head指针
-        head = (head + 1) % array.length;
+        head++;
         return value;
     }
 
@@ -69,7 +77,7 @@ public class ArrayQueue<E> implements Queue<E>, Iterable<E> {
             return null;
         }
         //不为空返回队头
-        return array[head];
+        return array[head % array.length];
     }
 
     /**
@@ -89,7 +97,7 @@ public class ArrayQueue<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public boolean isFull() {
-        return (tail + 1) % array.length == head;
+        return tail - head == array.length;
     }
 
     /**
@@ -103,13 +111,13 @@ public class ArrayQueue<E> implements Queue<E>, Iterable<E> {
             int p = head;
             @Override
             public boolean hasNext() {
-                return p!=tail;
+                return p != tail;
             }
 
             @Override
             public E next() {
-                E value = array[p];
-                p=(p+1)%array.length;
+                E value = array[p % array.length];
+                p++;
                 return value;
             }
         };
