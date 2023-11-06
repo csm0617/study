@@ -1,6 +1,6 @@
 package com.csm.study.queue;
 
-import com.csm.study.datastructure.queue.ArrayQueue;
+import com.csm.study.datastructure.queue.ArrayQueue2;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ public class TestArrayQueue {
     @Test
     @DisplayName("测试环形数组队列添加")
     public void testOffer(){
-        ArrayQueue<Integer> queue = new ArrayQueue<Integer>(3);
+        ArrayQueue2<Integer> queue = new ArrayQueue2<Integer>(3);
         queue.offer(1);
         queue.offer(2);
         queue.offer(3);
@@ -24,7 +24,7 @@ public class TestArrayQueue {
     @Test
     @DisplayName("测试环形数组队列添加")
     public void testPoll(){
-        ArrayQueue<Integer> queue = new ArrayQueue<Integer>(3);
+        ArrayQueue2<Integer> queue = new ArrayQueue2<Integer>(3);
         queue.offer(1);
         queue.offer(2);
         queue.offer(3);
@@ -41,7 +41,7 @@ public class TestArrayQueue {
     @Test
     @DisplayName("测试环形数组队列添加")
     public void testPeek(){
-        ArrayQueue<Integer> queue = new ArrayQueue<Integer>(3);
+        ArrayQueue2<Integer> queue = new ArrayQueue2<Integer>(3);
         queue.offer(1);
         queue.offer(2);
         queue.offer(3);
