@@ -32,7 +32,8 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
     //节点数
     private int size;
     //队列容量（默认最大）
-    private int capacity=Integer.MAX_VALUE;
+    private int capacity = Integer.MAX_VALUE;
+
     //构造方法来初始化构成环形（上一步head和tail都指向哨兵了）
     {
         tail.next = head;
@@ -54,7 +55,7 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
     @Override
     public boolean offer(E value) {
         //先判断队列是否满了
-        if (isFull()){
+        if (isFull()) {
             return false;
         }
         //加入节点
@@ -75,17 +76,18 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
      */
     @Override
     public E poll() {
-        if (isEmpty()){
+        if (isEmpty()) {
             return null;
         }
         Node<E> first = head.next;
         //从队头移除first
-        head.next=first.next;
+        head.next = first.next;
         //当队列中只有一个元素的时候，从队头移除元素后
         //还需要
         //将尾指针指向head(指向哨兵)(恢复到空队列初始状态)
-        if (first.next==head){
-            tail.next=head;
+        if (first.next == head) {
+//            tail.next = head; 这个很严重的错误，只有一个元素且被移除了tail此时在first的位置上，要把tail的指向指向head不是把tail.next指向head；
+            tail = head;
         }
         size--;
         return first.value;
@@ -99,7 +101,7 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
     @Override
     public E peek() {
         //先判空
-        if (isEmpty()){
+        if (isEmpty()) {
             return null;
         }
         //head指针的下一个就是对头元素
@@ -116,7 +118,7 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
     public boolean isEmpty() {
         // 因为刚开始时队列为空，头尾指针都指向哨兵节点,head==tail
         // 当有元素加入队列时，尾指针开始移动这时头尾指针才不相等
-        return head==tail;
+        return head == tail;
     }
 
     /**
@@ -138,6 +140,7 @@ public class LinkedListQueue<E> implements Queue<E>, Iterable<E> {
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             Node<E> p = head.next;
+
             @Override
             public boolean hasNext() {
                 //环形链表，p走到头就结束遍历
