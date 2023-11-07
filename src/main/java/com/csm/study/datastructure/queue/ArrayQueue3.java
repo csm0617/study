@@ -14,9 +14,56 @@ public class ArrayQueue3<E> implements Queue<E>, Iterable<E> {
     private E[] array;
     private int head = 0;//头指针
     private int tail = 0;//尾指针
+    //-------------------------------------基于上次代码提交的改进------------------------------------
 
+        /*
+            上个版本的head++和tail++只用来计数会超过Int的的最大值溢出，
+            但是怎么能让在溢出tail%arr.length的情况下还能继续找到索引呢
+        */
+
+    /*
+     * 求模运算
+     * 如果除数是2的n次方
+     * 那么被除数的后n位即为余数(模)
+     * 求被除数的后n位的方法，与2^n-1位与
+     * 15 % 4    15 二进制：1111   4：2^2
+     * 所以15 % 4 == 1111 & 0011
+     * 0011 == 3
+     * */
+
+    /*
+     * 在ArrayQueue3的基础上为了避免tail或者head++发生溢出
+     * 所以求环形队列索引 tail % arr.length 可以转化为 tail & (arr.length-1) 来求
+     * 但前提是 arr.length 也就是数组的容量必须是 2的n次方
+     * */
+    //-------------------------------------基于上次代码提交的改进------------------------------------
+//
+//    /**
+//     * 方法1
+//     * 基于以上说明，数组的容量必须是2^n
+//     * @param capacity
+//     */
+//    @SuppressWarnings("all")
+//    public ArrayQueue3(int capacity) {
+//        if ((capacity&capacity-1)!=0){
+//            throw new IllegalArgumentException("传入的数组容量必须是2^n");
+//        }
+//        array = (E[]) new Object[capacity];
+//    }
+
+    /**
+     * 方法2
+     * 基于以上说明，数组的容量必须是2^n
+     * 将传入的capacity改为离他最近的大的一个2^n
+     *
+     * @param capacity
+     */
     @SuppressWarnings("all")
     public ArrayQueue3(int capacity) {
+        //求capacity的log以2为底的对数(换底公式)   log2()
+        int n = (int) (Math.log10(capacity - 1) / Math.log10(2)) + 1;
+        //右移n为
+        capacity = 1 << n;
         array = (E[]) new Object[capacity];
     }
 
@@ -41,7 +88,7 @@ public class ArrayQueue3<E> implements Queue<E>, Iterable<E> {
             return false;
         }
         //在尾指针处添加
-        array[tail % array.length] = value;
+        array[tail & (array.length - 1)] = value;
         //更新尾指针指向
         tail++;
         return true;
@@ -59,7 +106,7 @@ public class ArrayQueue3<E> implements Queue<E>, Iterable<E> {
             return null;
         }
         //不为空，拿到队头元素
-        E value = array[head % array.length];
+        E value = array[head & (array.length - 1)];
         //再更新head指针
         head++;
         return value;
@@ -77,7 +124,7 @@ public class ArrayQueue3<E> implements Queue<E>, Iterable<E> {
             return null;
         }
         //不为空返回队头
-        return array[head % array.length];
+        return array[head & (array.length - 1)];
     }
 
     /**
@@ -109,6 +156,7 @@ public class ArrayQueue3<E> implements Queue<E>, Iterable<E> {
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             int p = head;
+
             @Override
             public boolean hasNext() {
                 return p != tail;
@@ -116,7 +164,7 @@ public class ArrayQueue3<E> implements Queue<E>, Iterable<E> {
 
             @Override
             public E next() {
-                E value = array[p % array.length];
+                E value = array[p & (array.length - 1)];
                 p++;
                 return value;
             }
