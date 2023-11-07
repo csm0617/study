@@ -23,12 +23,10 @@ public class TestLinkedListQueue {
     public void poll(){
         LinkedListQueue<Integer> queue = new LinkedListQueue<>();
         queue.offer(1);
-        queue.offer(2);
-        queue.offer(3);
-        queue.offer(4);
-        queue.offer(5);
         Integer remove = queue.poll();
         System.out.println(remove);
+        queue.offer(2);
+        queue.offer(3);
         for (Integer integer : queue) {
             System.out.printf("%-4d",integer);
         }
