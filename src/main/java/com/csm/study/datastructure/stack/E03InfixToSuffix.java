@@ -65,7 +65,7 @@ public class E03InfixToSuffix {
                             stack.push(c);
                         } else {
                             //当栈不为空，如果栈顶运算符大于当前运算，就把栈顶运算符出栈，直到小于当前运算符
-                            while (!stack.isEmpty() && priority(c) <= stack.peek()) {
+                            while (!stack.isEmpty() && priority(c) <= priority(stack.peek())) {
                                 sb.append(stack.pop());
                             }
                             //出循环意味着，栈顶没有优先级大于当前运算符的优先级了，就把当前运算符出栈
