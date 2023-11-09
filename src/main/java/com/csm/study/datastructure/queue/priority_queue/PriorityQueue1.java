@@ -54,7 +54,8 @@ public class PriorityQueue1<E extends Priority> implements Queue<E> {
             // 长度是（size-1）(数组的最后一位)到被删除元素index的距离
         }
         //删除元素size--（如果是在最后一个位置就不需要移动，只需要将size--,下次添加会覆盖掉）
-        size--;
+//        size--;
+        array[--size]=null;//把删除的位置赋值为空
     }
 
     /**
