@@ -1,7 +1,8 @@
-package com.csm.study.datastructure.deque;
+package com.csm.study.datastructure.queue.deque;
+
+import com.csm.study.datastructure.queue.deque.structure.Deque;
 
 import java.util.Iterator;
-import java.util.Queue;
 
 /**
  * 基于双向环形链表实现双端队列

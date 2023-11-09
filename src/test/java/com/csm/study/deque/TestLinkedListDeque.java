@@ -1,6 +1,6 @@
 package com.csm.study.deque;
 
-import com.csm.study.datastructure.deque.LinkedListDeque;
+import com.csm.study.datastructure.queue.deque.LinkedListDeque;
 import org.junit.jupiter.api.Test;
 
 public class TestLinkedListDeque {

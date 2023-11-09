@@ -1,4 +1,6 @@
-package com.csm.study.datastructure.deque;
+package com.csm.study.datastructure.queue.deque;
+
+import com.csm.study.datastructure.queue.deque.structure.Deque;
 
 import java.util.Iterator;
 

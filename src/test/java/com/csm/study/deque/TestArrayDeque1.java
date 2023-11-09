@@ -1,6 +1,6 @@
 package com.csm.study.deque;
 
-import com.csm.study.datastructure.deque.ArrayDeque1;
+import com.csm.study.datastructure.queue.deque.ArrayDeque1;
 import org.junit.jupiter.api.Test;
 
 public class TestArrayDeque1 {

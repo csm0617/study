@@ -1,4 +1,4 @@
-package com.csm.study.datastructure.deque;
+package com.csm.study.datastructure.queue.deque.structure;
 
 /**
  * 双端队列接口
