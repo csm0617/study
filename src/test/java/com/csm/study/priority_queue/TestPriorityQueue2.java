@@ -1,13 +1,13 @@
 package com.csm.study.priority_queue;
 
 import com.csm.study.datastructure.queue.priority_queue.Entry;
-import com.csm.study.datastructure.queue.priority_queue.PriorityQueue1;
+import com.csm.study.datastructure.queue.priority_queue.PriorityQueue2;
 import org.junit.jupiter.api.Test;
 
-public class TestPriorityQueue1 {
+public class TestPriorityQueue2 {
     @Test
     public void offer(){
-        PriorityQueue1<Entry> queue1 = new PriorityQueue1<Entry>(5);
+        PriorityQueue2<Entry> queue1 = new PriorityQueue2<Entry>(5);
         queue1.offer(new Entry("task1",4));
         queue1.offer(new Entry("task2",5));
         queue1.offer(new Entry("task3",2));
