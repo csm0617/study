@@ -2,6 +2,7 @@ package com.csm.study.datastructure.queue.blocking_queue;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,7 +16,7 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
     private final E[] array;
     private int head;
     private int tail;
-    private int size;
+    private AtomicInteger size;//为了防止指令交错,把size改为原子整数类
 
     public DoubleLockBlockingQueue(int capacity) {
         array = (E[]) new Object[capacity];
@@ -32,11 +33,11 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
     private Condition headWaits = headLock.newCondition();//条件变量，配合poll()，当队列为空的时候在headWaits等待
 
     private boolean isEmpty() {
-        return size == 0;
+        return size.get() == 0;
     }
 
     private boolean isFull() {
-        return size == array.length;
+        return size.get() == array.length;
     }
 
     @Override
@@ -53,7 +54,17 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
             if (++tail == array.length) {//超出了数组长度就归0
                 tail = 0;
             }
-            size++;
+            /*
+                size++做了三件事
+                1.先读取成员变量size的值 3
+                2.自增 4
+                3.结果写回到成员变量size 4
+                因为现在offer和poll是各自拥有一把锁，是并发执行的可能存在指令交错
+                在offer线程读到size为3，此时poll线程执行了，size本应该变为2，
+                但是offer线程结束后会在读到3的基础上+1变成4
+                为了解决这个问题将size改为原子类型
+             */
+            size.getAndIncrement();//size++
             headWaits.signal();//唤醒等待队列非空的poll线程
         } finally {
             tailLock.unlock();//解锁
@@ -79,7 +90,17 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
             if (++tail == array.length) {//超出了数组长度就归0
                 tail = 0;
             }
-            size++;
+            /*
+                size++做了三件事
+                1.先读取成员变量size的值 3
+                2.自增 4
+                3.结果写回到成员变量size 4
+                因为现在offer和poll是各自拥有一把锁，是并发执行的可能存在指令交错
+                在offer线程读到size为3，此时poll线程执行了，size本应该变为2，
+                但是offer线程结束后会在读到3的基础上+1变成4
+                为了解决这个问题将size改为原子类型
+             */
+            size.getAndIncrement();//size++
             headWaits.signal();//唤醒等待队列非空的poll线程
             return true;
         } finally {
@@ -99,7 +120,7 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
             if (++head == array.length) {
                 head = 0;
             }
-            size--;
+            size.getAndDecrement();//size--
             tailWaits.signal();//唤醒正在等待添加的offer线程
             return e;
         } finally {
