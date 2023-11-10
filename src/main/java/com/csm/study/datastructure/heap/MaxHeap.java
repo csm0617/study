@@ -48,9 +48,112 @@ public class MaxHeap {
     private void heapify() {
         //怎么找到最后这个非叶子节点 size/2 -1 （当前堆的大小除以2减-1）适用于下标从0开始
         for (int i = (size >> 1) - 1; i >= 0; i--) {
-                down(i);
+            down(i);
         }
     }
+
+    /**
+     * 获取堆顶元素
+     *
+     * @return 堆顶元素
+     */
+    public int peek() {
+        illegalIndex();
+        return array[0];
+    }
+
+    /**
+     * 删除堆顶元素
+     *
+     * @return 堆顶元素
+     */
+    public int poll() {
+        illegalIndex();
+        int top = array[0];
+        swap(0, size - 1);//将堆顶和最后一个元素交换
+        size--;
+        down(0);
+        return top;
+    }
+
+    /**
+     * 删除指定索引处的元素
+     *
+     * @param index 索引
+     * @return 被删除元素
+     */
+    public int poll(int index) {
+        illegalIndex(index);
+        int removed = array[index];
+        swap(index, size - 1);//思路也是和最后一个元素交换位置后，删除最后一个位置元素
+        size--;
+        down(index);
+        return removed;
+    }
+
+    /**
+     * 替换堆顶元素
+     *
+     * @param replaced 新元素
+     */
+    private void replace(int replaced) {
+        array[0] = replaced;
+        down(0);
+    }
+
+    /**
+     * 堆的尾部添加元素
+     *
+     * @param offered 新元素
+     * @return 是否添加成功
+     */
+    public boolean offer(int offered) {
+        if (isFull()) {
+            return false;
+        }
+        up(offered);
+        size++;
+        return true;
+    }
+
+
+    /**
+     * 判断堆是否为空
+     *
+     * @return 空返回true, 非空返回false
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
+     * 判断堆是否满了
+     *
+     * @return 满了返回true, 不满返回false
+     */
+    public boolean isFull() {
+        return size == array.length;
+    }
+
+    /**
+     * 将新添加的元素offered上浮：直到offered小于父元素或者到堆顶
+     *
+     * @param offered 添加的额元素
+     */
+    private void up(int offered) {
+        int child = size;
+        while (child > 0) {
+            int parent = (child - 1) / 2;
+            if (offered > array[parent]) {
+                array[child] = array[parent];
+            } else {
+                break;
+            }
+            child = parent;
+        }
+        array[child]=offered;
+    }
+
 
     /**
      * 将parent索引处的元素下潜：与两个孩子较大者交换，直至没孩子，或者孩子没他大
@@ -65,11 +168,11 @@ public class MaxHeap {
             max = left;
         }
         if (right < array.length && array[right] > array[max]) {
-            max=right;
+            max = right;
         }
         //当发现max的值发生改变的时候，才进行交换
-        if (max!=parent){
-            swap(max,parent);
+        if (max != parent) {
+            swap(max, parent);
             //交换完继续递归下潜
             down(max);
         }
@@ -78,17 +181,29 @@ public class MaxHeap {
     /**
      * 交换数组中两个数的位置
      *
-     * @param i     位置 i
-     * @param j     位置 j
+     * @param i 位置 i
+     * @param j 位置 j
      */
-    private void swap( int i, int j) {
+    private void swap(int i, int j) {
         int t = array[i];
         array[i] = array[j];
         array[j] = t;
     }
 
+    private void illegalIndex() {
+        if (isEmpty()) {
+            throw new IllegalArgumentException("堆已经空了,返回0位置不合法");
+        }
+    }
+
+    private void illegalIndex(int index) {
+        if (index < 0 || index > size) {
+            throw new IllegalArgumentException(index + "位置索引不合法");
+        }
+    }
+
     public static void main(String[] args) {
-        int[] array={1,2,3,4,5,6,7,8,9,10};
+        int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         MaxHeap heap = new MaxHeap(array);
         System.out.println(heap);   //[10, 9, 7, 8, 5, 6, 3, 1, 4, 2]
     }
