@@ -43,6 +43,7 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
 
     @Override
     public void offer(E e) throws InterruptedException {//可能存在poll线程在等待队列非空
+        int c;//记录添加前元素的个数
         tailLock.lockInterruptibly();//加锁
         try {
             //队列满了就阻塞
@@ -65,18 +66,38 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
                 但是offer线程结束后会在读到3的基础上+1变成4
                 为了解决这个问题将size改为原子类型
              */
-            size.getAndIncrement();//size++
+            c = size.getAndIncrement();//size++，后加加，c先记录添加前的元素个数，size再+1
+            //如果添加一个元素，以后还有位置可以添加，就由当前offer线程去唤醒其他的offer线程
+            if (c + 1 < array.length) {
+                tailWaits.signal();
+            }
         } finally {
             tailLock.unlock();//解锁
         }
-
-        //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
-        headLock.lock();
-        try {
-            headWaits.signal();
-        } finally {
-            headLock.unlock();
+        /*
+        背景--双端阻塞队列性能问题：
+           虽然上一个版本解决了死锁问题，但是还存在性能问题，例如
+               假设队列此时为空，当有三个offer线程offer1,offer2,offer3和三个poll线程时poll1,poll2,poll3
+               offer线程结束会唤醒其中一个poll线程，但是要唤醒就先必须拿到headLock锁，所以会导致其他所有的poll线程全部阻塞
+               导致出现性能问题
+               为了解决这个问题
+               0->1                 1->2                 2->3
+               offer1               offer2               offer3
+               记录从元素个数0->1的 这个线程获得headLock锁去唤醒poll线程    （其他offer线程在元素个数不为0的时候不再获得headLock锁）
+               当其中一个poll线程获得锁后，取走队头元素，判断取走之前元素个数 如果元素个数 >1 说明还有富足得元素可以被取走
+               那么剩下的线程由当前线程唤醒： poll1    ->    poll2   ->       poll3
+                                  被offer线程唤醒    由poll1级联通知     由poll2级联通知
+         */
+        if (c == 0) { //只让 从元素个数0->1的 这个线程获得锁
+            //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
+            headLock.lock();
+            try {
+                headWaits.signal();
+            } finally {
+                headLock.unlock();
+            }
         }
+
 
     }
 
@@ -123,6 +144,7 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
 
     @Override
     public E poll() throws InterruptedException {//可能存在等待队列不为满的offer线程
+        int c;//记录取走前元素的个数
         headLock.lockInterruptibly();//加锁
         E e;
         try {
@@ -134,18 +156,32 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
             if (++head == array.length) {
                 head = 0;
             }
-            size.getAndDecrement();//size--
+            c = size.getAndDecrement();//size--，后减减，先记录取走之前元素的个数，再size-1
+            //有多的元素可以取走，就唤醒其他的poll线程
+            if (c > 1) {
+                headWaits.signal();
+            }
 
         } finally {
             headLock.unlock();
         }
         //唤醒正在等待添加的offer线程，需要先获得tailLock锁，(tailWaits必须和它的锁一起使用否则会报错)
-        tailLock.lock();
-        try {
-            tailWaits.signal();
-        } finally {
-            tailLock.unlock();
+        //满  -> 不为满
+        /*
+            和offer的背景介绍相同，只由队列从满到不满的poll线程获得tailLock锁,再唤醒offer线程
+            （其他的offer线程，根据是否有足够的空间来添加来判断是否被唤醒的offer线程级联通知唤醒）
+                   offer1     ->        offer2         ->          offer3
+               被poll线程唤醒           offer1级联通知             offer2级联通知
+         */
+        if (c == array.length) {
+            tailLock.lock();
+            try {
+                tailWaits.signal();
+            } finally {
+                tailLock.unlock();
+            }
         }
+
         return e;
     }
 
