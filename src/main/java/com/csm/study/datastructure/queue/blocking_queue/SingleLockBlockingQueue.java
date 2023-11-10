@@ -5,14 +5,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class BlockingQueue1<E> implements BlockingQueue<E> {
+public class SingleLockBlockingQueue<E> implements BlockingQueue<E> {
 
     private final E[] array;
     private int head;
     private int tail;
     private int size;
 
-    public BlockingQueue1(int capacity) {
+    public SingleLockBlockingQueue(int capacity) {
         array = (E[]) new Object[capacity];
     }
 

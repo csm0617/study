@@ -1,10 +1,10 @@
 package com.csm.study.blocking_queue;
 
-import com.csm.study.datastructure.queue.blocking_queue.BlockingQueue1;
+import com.csm.study.datastructure.queue.blocking_queue.SingleLockBlockingQueue;
 
-public class TestBlockingQueue1 {
+public class TestSingleLockBlockingQueue {
     public static void main(String[] args) throws InterruptedException {
-        BlockingQueue1<String> queue = new BlockingQueue1<>(3);
+        SingleLockBlockingQueue<String> queue = new SingleLockBlockingQueue<>(3);
         Thread t1 = new Thread(() -> {
 
             try {
