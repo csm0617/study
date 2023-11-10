@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * 单锁阻塞队列offer和poll用的都是同一把锁，出队和入队不能并发执行
  * 让出队和入队各拥有一把锁
+ *
  * @param <E>
  */
 public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
@@ -16,7 +17,7 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
     private final E[] array;
     private int head;
     private int tail;
-    private AtomicInteger size;//为了防止指令交错,把size改为原子整数类
+    private AtomicInteger size = new AtomicInteger();//为了防止指令交错,把size改为原子整数类
 
     public DoubleLockBlockingQueue(int capacity) {
         array = (E[]) new Object[capacity];
@@ -65,15 +66,16 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
                 为了解决这个问题将size改为原子类型
              */
             size.getAndIncrement();//size++
-            //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
-            headLock.lock();
-            try {
-                headWaits.signal();
-            }finally {
-                headLock.unlock();
-            }
         } finally {
             tailLock.unlock();//解锁
+        }
+
+        //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
+        headLock.lock();
+        try {
+            headWaits.signal();
+        } finally {
+            headLock.unlock();
         }
 
     }
@@ -107,61 +109,64 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
                 为了解决这个问题将size改为原子类型
              */
             size.getAndIncrement();//size++
-            //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
-            try {
-                headWaits.signal();
-            }finally {
-                headLock.unlock();
-            }
-            return true;
         } finally {
             tailLock.unlock();//解锁
         }
+        //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
+        try {
+            headWaits.signal();
+        } finally {
+            headLock.unlock();
+        }
+        return true;
     }
 
     @Override
     public E poll() throws InterruptedException {//可能存在等待队列不为满的offer线程
         headLock.lockInterruptibly();//加锁
+        E e;
         try {
             while (isEmpty()) {
                 headWaits.wait();
             }
-            E e = array[head];
+            e = array[head];
             array[head] = null;
             if (++head == array.length) {
                 head = 0;
             }
             size.getAndDecrement();//size--
-            //唤醒正在等待添加的offer线程，需要先获得tailLock锁，(tailWaits必须和它的锁一起使用否则会报错)
-            tailLock.lock();
-            try {
-                tailWaits.signal();
-            }finally {
-                tailLock.unlock();
-            }
-            return e;
+
         } finally {
             headLock.unlock();
         }
+        //唤醒正在等待添加的offer线程，需要先获得tailLock锁，(tailWaits必须和它的锁一起使用否则会报错)
+        tailLock.lock();
+        try {
+            tailWaits.signal();
+        } finally {
+            tailLock.unlock();
+        }
+        return e;
     }
 
     public static void main(String[] args) throws InterruptedException {
         DoubleLockBlockingQueue<String> queue = new DoubleLockBlockingQueue<String>(3);
         queue.offer("任务1");
-        new Thread(()->{
+
+        new Thread(() -> {
             try {
-                queue.offer("任务二");
+                System.out.println("poll_1: " + queue.poll());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        },"offer").start();
-        new Thread(()->{
+        }, "poll_1").start();
+        new Thread(() -> {
             try {
-                System.out.println(queue.poll());
+                queue.offer("元素");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        },"poll").start();
+        }, "offer");
     }
 
 }
