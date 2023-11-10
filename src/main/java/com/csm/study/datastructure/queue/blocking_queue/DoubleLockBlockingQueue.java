@@ -65,7 +65,13 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
                 为了解决这个问题将size改为原子类型
              */
             size.getAndIncrement();//size++
-            headWaits.signal();//唤醒等待队列非空的poll线程
+            //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
+            headLock.lock();
+            try {
+                headWaits.signal();
+            }finally {
+                headLock.unlock();
+            }
         } finally {
             tailLock.unlock();//解锁
         }
@@ -101,7 +107,12 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
                 为了解决这个问题将size改为原子类型
              */
             size.getAndIncrement();//size++
-            headWaits.signal();//唤醒等待队列非空的poll线程
+            //唤醒正在等待添加的poll线程，需要先获得headLock锁，(headWaits必须和它的锁一起使用否则会报错)
+            try {
+                headWaits.signal();
+            }finally {
+                headLock.unlock();
+            }
             return true;
         } finally {
             tailLock.unlock();//解锁
@@ -121,7 +132,13 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
                 head = 0;
             }
             size.getAndDecrement();//size--
-            tailWaits.signal();//唤醒正在等待添加的offer线程
+            //唤醒正在等待添加的offer线程，需要先获得tailLock锁，(tailWaits必须和它的锁一起使用否则会报错)
+            tailLock.lock();
+            try {
+                tailWaits.signal();
+            }finally {
+                tailLock.unlock();
+            }
             return e;
         } finally {
             headLock.unlock();
