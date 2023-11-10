@@ -43,11 +43,11 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
 
     @Override
     public void offer(E e) throws InterruptedException {//可能存在poll线程在等待队列非空
-        int c;//记录添加前元素的个数
         tailLock.lockInterruptibly();//加锁
+        int c;//记录添加前元素的个数
         try {
             //队列满了就阻塞
-            while (isFull()) { //while循环代 替if判断，防止虚假唤醒
+            while (isFull()) { //while循环代替if判断，防止虚假唤醒
                 tailWaits.await();
             }
             //往队尾添加元素
@@ -144,8 +144,8 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
 
     @Override
     public E poll() throws InterruptedException {//可能存在等待队列不为满的offer线程
-        int c;//记录取走前元素的个数
         headLock.lockInterruptibly();//加锁
+        int c;//记录取走前元素的个数
         E e;
         try {
             while (isEmpty()) {
@@ -187,7 +187,35 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
 
     public static void main(String[] args) throws InterruptedException {
         DoubleLockBlockingQueue<String> queue = new DoubleLockBlockingQueue<String>(3);
-        queue.offer("任务1");
+        new Thread(() -> {
+            try {
+                queue.offer("元素1");
+                System.out.println("offer1");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }, "offer1").start();
+
+        System.out.println(queue);
+        new Thread(() -> {
+            try {
+                queue.offer("元素2");
+                System.out.println("offer2");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }, "offer2").start();
+        System.out.println(queue);
+
+        new Thread(() -> {
+            try {
+                queue.offer("元素3");
+                System.out.println("offer3");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }, "offer3").start();
+        System.out.println(queue);
 
         new Thread(() -> {
             try {
@@ -196,13 +224,22 @@ public class DoubleLockBlockingQueue<E> implements BlockingQueue<E> {
                 throw new RuntimeException(e);
             }
         }, "poll_1").start();
+        System.out.println(queue);
+
         new Thread(() -> {
             try {
-                queue.offer("元素");
+                System.out.println("poll_2: " + queue.poll());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }, "offer");
+        }, "poll_2").start();
+        new Thread(() -> {
+            try {
+                System.out.println("poll_3: " + queue.poll());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }, "poll_3").start();
     }
 
 }
