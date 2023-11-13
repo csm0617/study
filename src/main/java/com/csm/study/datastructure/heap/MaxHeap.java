@@ -1,5 +1,7 @@
 package com.csm.study.datastructure.heap;
 
+import ch.qos.logback.classic.sift.SiftAction;
+
 import java.util.Arrays;
 
 /**
@@ -37,9 +39,17 @@ public class MaxHeap {
 
     @Override
     public String toString() {
-        return "MaxHeap{" +
-                "array=" + Arrays.toString(array) +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("heap:[ ");
+        for (int i = 0; i < size; i++) {
+            if (i != size - 1) {
+                sb.append(array[i] + "\t");
+            } else {
+                sb.append(array[i] + "");
+            }
+        }
+        sb.append(" ]");
+        return sb.toString();
     }
 
     /**
@@ -96,7 +106,7 @@ public class MaxHeap {
      *
      * @param replaced 新元素
      */
-    private void replace(int replaced) {
+    public void replace(int replaced) {
         array[0] = replaced;
         down(0);
     }
@@ -212,9 +222,22 @@ public class MaxHeap {
     }
 
     public static void main(String[] args) {
-        int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        MaxHeap heap = new MaxHeap(array);
+//        int[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        MaxHeap heap = new MaxHeap(10);
         System.out.println(heap);   //[10, 9, 7, 8, 5, 6, 3, 1, 4, 2]
+        for (int i = 1; i < 8; i++) {
+            heap.offer(i);
+        }
+        heap.offer(11);
+        heap.offer(15);
+        heap.offer(12);
+        System.out.println(heap);
+        System.out.println(heap.poll());
+        System.out.println(heap.poll());
+        System.out.println(heap.poll());
+        System.out.println(heap.peek());
+        heap.replace(15);
+        System.out.println(heap);
     }
 
 }
