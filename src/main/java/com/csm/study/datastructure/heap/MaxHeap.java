@@ -140,7 +140,7 @@ public class MaxHeap {
      *
      * @param offered 添加的额元素
      */
-    private void up(int offered) {
+    public void up(int offered) {
         int child = size;
         while (child > 0) {
             int parent = (child - 1) / 2;
@@ -166,14 +166,17 @@ public class MaxHeap {
      *
      * @param parent 需要下潜元素的索引
      */
-    private void down(int parent) {
+    public void down(int parent) {
         int max = parent;//假设一开始parent索引就是最大的
         int left = parent * 2 + 1;//左孩子索引
         int right = left + 1;//右孩子索引
-        if (left < array.length && array[left] > array[max]) {
+        //!!!比较的范围应该是size，不是array.length
+        //因为size是堆的属性，而array.length是数组的属性，不能混着用
+        //否则堆顶出堆的时候，和最后一个元素交换，又换回来了。
+        if (left < size && array[left] > array[max]) {
             max = left;
         }
-        if (right < array.length && array[right] > array[max]) {
+        if (right < size && array[right] > array[max]) {
             max = right;
         }
         //当发现max的值发生改变的时候，才进行交换
@@ -190,13 +193,13 @@ public class MaxHeap {
      * @param i 位置 i
      * @param j 位置 j
      */
-    private void swap(int i, int j) {
+    public void swap(int i, int j) {
         int t = array[i];
         array[i] = array[j];
         array[j] = t;
     }
 
-    private void illegalIndex() {
+    public void illegalIndex() {
         if (isEmpty()) {
             throw new IllegalArgumentException("堆已经空了,返回0位置不合法");
         }
