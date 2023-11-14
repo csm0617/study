@@ -1,4 +1,4 @@
-package com.csm.study.datastructure.queue.structure;
+package com.csm.study.datastructure.binarytree.structure;
 
 public class TreeNode {
     public int val;

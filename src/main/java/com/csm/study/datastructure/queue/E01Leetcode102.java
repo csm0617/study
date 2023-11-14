@@ -1,6 +1,6 @@
 package com.csm.study.datastructure.queue;
 
-import com.csm.study.datastructure.queue.structure.TreeNode;
+import com.csm.study.datastructure.binarytree.structure.TreeNode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
