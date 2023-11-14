@@ -22,11 +22,15 @@ public class E01Leetcode20 {
                 }
             }
         }
+        if (!stack.isEmpty()){
+            return false;
+        }
         return true;
     }
 
     public static void main(String[] args) {
         E01Leetcode20 s = new E01Leetcode20();
+        System.out.println(s.isValid("["));
         System.out.println(s.isValid("][]"));
         System.out.println(s.isValid("([{}])"));
         System.out.println(s.isValid("[(]"));
