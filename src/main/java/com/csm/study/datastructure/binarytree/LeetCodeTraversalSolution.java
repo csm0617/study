@@ -42,7 +42,7 @@ public class LeetCodeTraversalSolution {
                 //右子树处理完成
                 else if (peek.right == pop) {
                     pop = stack.pop();
-                    colorPrintln("后序" + pop.val, 34);//处理完右子树再打印是后序遍历
+                    colorPrintln("后序：" + pop.val, 34);//处理完右子树再打印是后序遍历
                 }
                 //待处理右子树
                 else {
