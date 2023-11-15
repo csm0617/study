@@ -8,6 +8,53 @@ import java.util.List;
 
 public class LeetCodeTraversalSolution {
     public static void main(String[] args) {
+        TreeNode root = new TreeNode(new TreeNode(new TreeNode(4), 2, new TreeNode(7)),
+                1,
+                new TreeNode(new TreeNode(5), 3, new TreeNode(6)));
+        treeTraversal(root);
+    }
+
+    /**
+     * 前中后统一的遍历模板
+     *
+     * @param root
+     * @return
+     * @注意打印的时机就行
+     */
+    public static void treeTraversal(TreeNode root) {
+        TreeNode curr = root;//记录当前节点的指针
+        LinkedList<TreeNode> stack = new LinkedList<>();//记录curr指针走过的路
+        TreeNode pop = null;//记录上次弹出的节点
+        while (curr != null || !stack.isEmpty()) {
+            if (curr != null) {
+                stack.push(curr);
+                colorPrintln("前序:" + curr.val, 31);//前序遍历，先打印节点，再处理左子树，处理完左子树再处理右子树
+                curr = curr.left;//处理左子树
+            } else {//左子树处理完了
+                TreeNode peek = stack.peek();
+                //没有右子树
+                if (peek.right == null) {
+                    colorPrintln("中序：" + peek.val, 36);//中序遍历和后序遍历，在没有右子树的情况下打印是相同的
+                    pop = stack.pop();
+                    colorPrintln("后序：" + pop.val, 34);
+
+                }
+                //右子树处理完成
+                else if (peek.right == pop) {
+                    pop = stack.pop();
+                    colorPrintln("后序" + pop.val, 34);//处理完右子树再打印是后序遍历
+                }
+                //待处理右子树
+                else {
+                    colorPrintln("中序：" + peek.val, 36);//处理完左子树，右子树还没处理，此时打印是中序遍历
+                    curr = peek.right;
+                }
+            }
+        }
+    }
+
+    private static void colorPrintln(String origin, int color) {
+        System.out.printf("\033[%dm%s\033[0m%n", color, origin);
     }
 
     /**
@@ -64,6 +111,7 @@ public class LeetCodeTraversalSolution {
 
     /**
      * 中序遍历（非递归）
+     *
      * @param root
      * @return
      */
