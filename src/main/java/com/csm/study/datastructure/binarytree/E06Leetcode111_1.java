@@ -1,7 +1,9 @@
 package com.csm.study.datastructure.binarytree;
 
 import com.csm.study.datastructure.binarytree.structure.TreeNode;
-
+/**
+ * leetcode111求二叉树的最小深度（递归）
+ */
 public class E06Leetcode111_1 {
     public int minDepth(TreeNode root) {
         if (root == null) {
