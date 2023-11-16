@@ -59,7 +59,6 @@ public class TestBSTTree1 {
         BSTTree1 tree = create();
         System.out.println(tree.min());
         System.out.println(tree.min1());
-        System.out.println(tree.max1());
         System.out.println(tree.max());
     }
 
@@ -77,5 +76,11 @@ public class TestBSTTree1 {
         tree.put(1,"教主张无忌");
         System.out.println(tree.get(1));
         System.out.println(tree.get(4));
+    }
+
+    @Test
+    public void successor(){
+        BSTTree1 tree = create();
+        System.out.println(tree.successor(3));
     }
 }

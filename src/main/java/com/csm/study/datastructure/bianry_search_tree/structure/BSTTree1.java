@@ -113,7 +113,7 @@ public class BSTTree1 {
      * @return 关键字对应的值
      */
     public Object max() {
-        return doMax(root);
+        return max(root);
     }
 
     private Object doMax(BSTNode node) {
@@ -131,11 +131,11 @@ public class BSTTree1 {
      *
      * @return 关键字对应的值
      */
-    public Object max1() {
-        if (root == null) {
+    public Object max(BSTNode node) {
+        if (node == null) {
             return null;
         }
-        BSTNode p = root;
+        BSTNode p = node;
         while (p.right != null) {
             p = p.right;
         }
@@ -174,7 +174,7 @@ public class BSTTree1 {
         if (parent.key > key) {
             parent.left = new BSTNode(key, value);
             //比父节点关键字大，就加到右孩子
-        } else  {
+        } else {
             parent.right = new BSTNode(key, value);
         }
 
@@ -187,7 +187,37 @@ public class BSTTree1 {
      * @return 前驱值
      */
     public Object successor(int key) {
-        return null;
+        //1.要找key的前驱，先找key
+        BSTNode p = root;
+        BSTNode ancestorFromLeft = null;
+        while (p != null) {
+            if (p.key < key) {
+                //当要右拐了，说明p来自左，记录ancestorFromLeft
+                ancestorFromLeft = p;
+                p = p.right;
+            } else if (p.key > key) {
+                p = p.left;
+
+            } else {
+                break;//找到了就退出循环
+            }
+        }
+        //2.判断此时的key是否找到
+        if (p == null) {
+            return null;//没找到返回null
+        }
+        /*
+            找到了,分为两种情况
+         */
+        //情况1:如果p的左子树不为空，那么p的左子树的最大key就是p的前驱
+        if (p.left != null) {
+            return max(p.left);
+        }
+        //情况2:如果p的左子树为空，那么距离p最近的一个来自左边的祖先节点就是p的前驱
+        /*
+            这里很巧妙的运用了在找key的时候发生右拐，那么说明右拐之前的节点就是来自左的祖先节点
+         */
+        return ancestorFromLeft != null ? ancestorFromLeft.value : null;
     }
 
     /**
