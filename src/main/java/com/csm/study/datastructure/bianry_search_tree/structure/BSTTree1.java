@@ -78,7 +78,7 @@ public class BSTTree1 {
      * @return 关键字对应的值
      */
     public Object min() {
-        return doMin(root);
+        return min(root);
     }
 
     private Object doMin(BSTNode node) {
@@ -96,11 +96,11 @@ public class BSTTree1 {
      *
      * @return 关键字对应的值
      */
-    public Object min1() {
-        if (root == null) {
+    public Object min(BSTNode node) {
+        if (node == null) {
             return null;
         }
-        BSTNode p = root;
+        BSTNode p = node;
         while (p.left != null) {
             p = p.left;
         }
@@ -227,7 +227,37 @@ public class BSTTree1 {
      * @return 后继值
      */
     public Object predecessor(int key) {
-        return null;
+        //1.要找key的前驱，先找key
+        BSTNode p = root;
+        BSTNode ancestorFromRight = null;
+        while (p != null) {
+            if (p.key < key) {
+                p = p.right;
+            } else if (p.key > key) {
+                //当要左拐了，说明p来自右，记录ancestorFromLeft
+                ancestorFromRight = p;
+                p = p.left;
+
+            } else {
+                break;//找到了就退出循环
+            }
+        }
+        //2.判断此时的key是否找到
+        if (p == null) {
+            return null;//没找到返回null
+        }
+        /*
+            找到了,分为两种情况
+         */
+        //情况1:如果p的右子树不为空，那么p的右子树的最小key就是p的前驱
+        if (p.right != null) {
+            return min(p.right);
+        }
+        //情况2:如果p的右子树为空，那么距离p最近的一个来自右边的祖先节点就是p的前驱
+        /*
+            这里很巧妙的运用了在找key的时候发生左拐，那么说明左拐之前的节点就是来自右的祖先节点
+         */
+        return ancestorFromRight != null ? ancestorFromRight.value : null;
     }
 
     /**
