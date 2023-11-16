@@ -1,5 +1,7 @@
 package com.csm.study.datastructure.bianry_search_tree.structure;
 
+import com.csm.study.datastructure.binarytree.structure.TreeNode;
+
 public class BSTTree1 {
     public BSTNode root;//根节点
 
@@ -27,7 +29,7 @@ public class BSTTree1 {
     }
 
     /**
-     * 根据关键字查找对应值
+     * 根据关键字查找对应值(递归)
      *
      * @param key 关键字
      * @return 关键字对应的值
@@ -49,6 +51,7 @@ public class BSTTree1 {
             return node.value;
         }
     }
+
     /**
      * 根据关键字查找对应值（非递归）
      *
@@ -70,22 +73,75 @@ public class BSTTree1 {
     }
 
     /**
-     * 查找最小关键字对应值
+     * 查找最小关键字对应值（递归）
      *
      * @return 关键字对应的值
      */
     public Object min() {
-        return null;
+        return doMin(root);
+    }
+
+    private Object doMin(BSTNode node) {
+        if (node == null) {
+            return null;
+        }
+        if (node.left == null) {
+            return node.value;
+        }
+        return doMin(node.left);
     }
 
     /**
-     * 查找最大关键字对应值
+     * 查找最小关键字对应值（非递归）
+     *
+     * @return 关键字对应的值
+     */
+    public Object min1() {
+        if (root == null) {
+            return null;
+        }
+        BSTNode p = root;
+        while (p.left != null) {
+            p = p.left;
+        }
+        return p.value;
+    }
+
+    /**
+     * 查找最大关键字对应值（递归）
      *
      * @return 关键字对应的值
      */
     public Object max() {
-        return null;
+        return doMax(root);
     }
+
+    private Object doMax(BSTNode node) {
+        if (node == null) {
+            return null;
+        }
+        if (node.right == null) {
+            return node.value;
+        }
+        return doMax(node.right);
+    }
+
+    /**
+     * 查找最大关键字对应值（非递归）
+     *
+     * @return 关键字对应的值
+     */
+    public Object max1() {
+        if (root == null) {
+            return null;
+        }
+        BSTNode p = root;
+        while (p.right != null) {
+            p = p.right;
+        }
+        return p.value;
+    }
+
 
     /**
      * 存储关键字和对应值

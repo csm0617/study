@@ -52,4 +52,13 @@ public class TestBSTTree1 {
         System.out.println(tree.get1(8));
         System.out.println(tree.get1(9));
     }
+
+    @Test
+    public void minOrMax(){
+        BSTTree1 tree = create();
+        System.out.println(tree.min());
+        System.out.println(tree.min1());
+        System.out.println(tree.max1());
+        System.out.println(tree.max());
+    }
 }
