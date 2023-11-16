@@ -144,12 +144,39 @@ public class BSTTree1 {
 
 
     /**
-     * 存储关键字和对应值
+     * 存储关键字和对应值（非递归） 有就修改，没有就新增
      *
      * @param key   关键字
      * @param value 值
      */
     public void put(int key, Object value) {
+        //2.查找这个关键字
+        BSTNode node = root;
+        BSTNode parent = null;//记录如果需要新增节点的父节点
+        while (node != null) {
+            parent = node;
+            if (node.key < key) {
+                node = node.right;
+            } else if (node.key > key) {
+                node = node.left;
+            } else {
+                //2.1找到了就修改
+                node.value = value;
+                return;
+            }
+        }
+        //2.2找不到就新增
+        if (parent == null) {//parent为null说明传进来的树的是空的
+            root = new BSTNode(key, value);
+            return;
+        }
+        //比父节点关键字小，就加到左孩子
+        if (parent.key > key) {
+            parent.left = new BSTNode(key, value);
+            //比父节点关键字大，就加到右孩子
+        } else  {
+            parent.right = new BSTNode(key, value);
+        }
 
     }
 

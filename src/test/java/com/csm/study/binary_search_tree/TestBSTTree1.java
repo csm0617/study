@@ -2,7 +2,8 @@ package com.csm.study.binary_search_tree;
 
 import com.csm.study.datastructure.bianry_search_tree.structure.BSTTree1;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.Assert;
 public class TestBSTTree1 {
     public BSTTree1 create() {
         /*
@@ -60,5 +61,21 @@ public class TestBSTTree1 {
         System.out.println(tree.min1());
         System.out.println(tree.max1());
         System.out.println(tree.max());
+    }
+
+    @Test
+    public void put(){
+        BSTTree1 tree = new BSTTree1();
+        tree.put(4,new Object());
+        tree.put(2,new Object());
+        tree.put(6,new Object());
+        tree.put(1,"张无忌");
+        System.out.println(tree.get(1));
+        tree.put(3,new Object());
+        tree.put(7,new Object());
+        tree.put(5,new Object());
+        tree.put(1,"教主张无忌");
+        System.out.println(tree.get(1));
+        System.out.println(tree.get(4));
     }
 }
