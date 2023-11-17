@@ -2,8 +2,10 @@ package com.csm.study.datastructure.bianry_search_tree.structure;
 
 import com.csm.study.datastructure.binarytree.structure.TreeNode;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class BSTTree1 {
     public BSTNode root;//根节点
@@ -422,6 +424,88 @@ public class BSTTree1 {
         s.left = node.left;
 
         return s;
+    }
+
+    /**
+     * @param key 关键字
+     * @return 小于key的所有value
+     */
+    public List<Object> less(int key) {
+        List<Object> result = new LinkedList<>();
+        BSTNode p = root;
+        LinkedList<BSTNode> stack = new LinkedList<>();
+        while (p != null || !stack.isEmpty()) {
+            if (p != null) {
+                stack.push(p);
+                p = p.left;
+            } else {//p左边都处理完了
+                //处理值
+                BSTNode pop = stack.pop();
+                if (pop.key < key) {
+                    result.add(pop.value);
+                } else {
+                    break;//遇到比key大的就应该结束了，因为此时pop的右侧肯定都比key大（二叉搜索树的性质）
+                }
+                p = pop.right;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @param key 关键字
+     * @return 大于key的所有value
+     */
+    public List<Object> greater(int key) {
+        List<Object> result = new LinkedList<>();
+        BSTNode p = root;
+        LinkedList<BSTNode> stack = new LinkedList<>();
+        while (p != null || !stack.isEmpty()) {
+            if (p != null) {
+                stack.push(p);
+                p = p.left;
+            } else {//p左边都处理完了
+                //处理值
+                BSTNode pop = stack.pop();
+                if (pop.key > key) {
+                    result.add(pop.value);
+                }//这里不能break，因为pop的右侧还存在比key更大的
+                p = pop.right;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @param key1 关键字1
+     * @param key2 关键字2
+     * @return 把key在[key1, key2]之间的value返回
+     */
+    public List<Object> between(int key1, int key2) {
+        if (key1 > key2) {
+            int tmp = key1;
+            key1 = key2;
+            key2 = tmp;
+        }
+        List<Object> result = new LinkedList<>();
+        BSTNode p = root;
+        LinkedList<BSTNode> stack = new LinkedList<>();
+        while (p != null || !stack.isEmpty()) {
+            if (p != null) {
+                stack.push(p);
+                p = p.left;
+            } else {//p左边都处理完了
+                //处理值
+                BSTNode pop = stack.pop();
+                if (pop.key >= key1 && pop.key <= key2) {//把key在[key1,key2]之间的value返回
+                    result.add(pop.value);
+                } else if (pop.key >= key2) {//当pop.key>key2了就没必要继续遍历下去了
+                    break;
+                }
+                p = pop.right;
+            }
+        }
+        return result;
     }
 
 

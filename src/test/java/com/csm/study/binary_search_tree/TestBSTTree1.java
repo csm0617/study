@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class TestBSTTree1 {
@@ -34,8 +35,9 @@ public class TestBSTTree1 {
         return tree;
 
     }
+
     @Test
-    public void get(){
+    public void get() {
         BSTTree1 tree = create();
         System.out.println(tree.get(1));
         System.out.println(tree.get(2));
@@ -47,8 +49,9 @@ public class TestBSTTree1 {
         System.out.println(tree.get(8));
         System.out.println(tree.get(9));
     }
+
     @Test
-    public void get1(){
+    public void get1() {
         BSTTree1 tree = create();
         System.out.println(tree.get1(1));
         System.out.println(tree.get1(2));
@@ -62,30 +65,30 @@ public class TestBSTTree1 {
     }
 
     @Test
-    public void minOrMax(){
+    public void minOrMax() {
         BSTTree1 tree = create();
         System.out.println(tree.min());
         System.out.println(tree.max());
     }
 
     @Test
-    public void put(){
+    public void put() {
         BSTTree1 tree = new BSTTree1();
-        tree.put(4,new Object());
-        tree.put(2,new Object());
-        tree.put(6,new Object());
-        tree.put(1,"张无忌");
+        tree.put(4, new Object());
+        tree.put(2, new Object());
+        tree.put(6, new Object());
+        tree.put(1, "张无忌");
         System.out.println(tree.get(1));
-        tree.put(3,new Object());
-        tree.put(7,new Object());
-        tree.put(5,new Object());
-        tree.put(1,"教主张无忌");
+        tree.put(3, new Object());
+        tree.put(7, new Object());
+        tree.put(5, new Object());
+        tree.put(1, "教主张无忌");
         System.out.println(tree.get(1));
         System.out.println(tree.get(4));
     }
 
     @Test
-    public void successor(){
+    public void successor() {
         BSTTree1 tree = create();
         System.out.println(tree.successor(3));
         System.out.println(tree.successor(2));
@@ -94,7 +97,7 @@ public class TestBSTTree1 {
     }
 
     @Test
-    public void delete(){
+    public void delete() {
         /*
                             4
                           /   \
@@ -104,21 +107,22 @@ public class TestBSTTree1 {
                             /
                            5
          */
-        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1,1);
-        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3,3);
-        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2,2,n1, n3);
-        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5,5);
-        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6,6,n5,null);
-        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7,7,n6,null);
-        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4,4,n2,n7);
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, null);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
         BSTTree1 tree = new BSTTree1();
-        tree.root=root1;
+        tree.root = root1;
         System.out.println(tree.delete(7));
         System.out.println(tree.get(7));
     }
+
     @Test
     @DisplayName("删除叶子节点")
-    public void delete1(){
+    public void delete1() {
         /*
                             4
                           /   \
@@ -128,15 +132,15 @@ public class TestBSTTree1 {
                             /
                            5
          */
-        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1,1);
-        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3,3);
-        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2,2,n1, n3);
-        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5,5);
-        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6,6,n5,null);
-        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7,7,n6,null);
-        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4,4,n2,n7);
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, null);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
         BSTTree1 tree = new BSTTree1();
-        tree.root=root1;
+        tree.root = root1;
         System.out.println(tree.delete(1));
         System.out.println(tree);
         System.out.println(tree.delete(2));
@@ -147,7 +151,7 @@ public class TestBSTTree1 {
 
     @Test
     @DisplayName("删除只有左孩子或者右孩子的")
-    public void delete2(){
+    public void delete2() {
         /*
                             4
                           /   \
@@ -158,15 +162,15 @@ public class TestBSTTree1 {
                            5
          */
 //        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1,1);
-        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3,3);
-        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2,2,null, n3);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, null, n3);
 //        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2,2,n1, n3);
-        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5,5);
-        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6,6,n5,null);
-        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7,7,n6,null);
-        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4,4,n2,n7);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, null);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
         BSTTree1 tree = new BSTTree1();
-        tree.root=root1;
+        tree.root = root1;
         System.out.println(tree.delete(7));
         System.out.println(tree);
         System.out.println(tree.delete1(2));
@@ -175,7 +179,7 @@ public class TestBSTTree1 {
 
     @Test
     @DisplayName("删除有左右孩子且后继相邻的")
-    public void delete3(){
+    public void delete3() {
         /*
                             4
                           /   \
@@ -187,19 +191,19 @@ public class TestBSTTree1 {
                                      \
                                      11
          */
-        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1,1);
-        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3,3);
-        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2,2,n1, n3);
-        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5,5);
-        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6,6,n5,null);
-        BSTTree1.BSTNode n8 = new BSTTree1.BSTNode(8,8);
-        BSTTree1.BSTNode n11 = new BSTTree1.BSTNode(11,11);
-        BSTTree1.BSTNode n10 = new BSTTree1.BSTNode(10,10,null,n11);
-        BSTTree1.BSTNode n9 = new BSTTree1.BSTNode(9,9,n8,n10);
-        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7,7,n6,n9);
-        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4,4,n2,n7);
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n8 = new BSTTree1.BSTNode(8, 8);
+        BSTTree1.BSTNode n11 = new BSTTree1.BSTNode(11, 11);
+        BSTTree1.BSTNode n10 = new BSTTree1.BSTNode(10, 10, null, n11);
+        BSTTree1.BSTNode n9 = new BSTTree1.BSTNode(9, 9, n8, n10);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, n9);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
         BSTTree1 tree = new BSTTree1();
-        tree.root=root1;
+        tree.root = root1;
         System.out.println(tree.delete(9));
         System.out.println(tree);
         System.out.println(tree.delete1(2));//递归删除
@@ -208,7 +212,7 @@ public class TestBSTTree1 {
 
     @Test
     @DisplayName("删除有左右孩子且后继不相邻的")
-    public void delete4(){
+    public void delete4() {
         /*
                             4
                           /   \
@@ -220,24 +224,57 @@ public class TestBSTTree1 {
                                      \
                                      11
          */
-        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1,1);
-        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3,3);
-        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2,2,n1, n3);
-        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5,5);
-        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6,6,n5,null);
-        BSTTree1.BSTNode n8 = new BSTTree1.BSTNode(8,8);
-        BSTTree1.BSTNode n11 = new BSTTree1.BSTNode(11,11);
-        BSTTree1.BSTNode n10 = new BSTTree1.BSTNode(10,10,null,n11);
-        BSTTree1.BSTNode n9 = new BSTTree1.BSTNode(9,9,n8,n10);
-        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7,7,n6,n9);
-        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4,4,n2,n7);
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n8 = new BSTTree1.BSTNode(8, 8);
+        BSTTree1.BSTNode n11 = new BSTTree1.BSTNode(11, 11);
+        BSTTree1.BSTNode n10 = new BSTTree1.BSTNode(10, 10, null, n11);
+        BSTTree1.BSTNode n9 = new BSTTree1.BSTNode(9, 9, n8, n10);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, n9);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
         BSTTree1 tree = new BSTTree1();
-        tree.root=root1;
+        tree.root = root1;
         System.out.println(tree.delete(7));
         System.out.println(tree);
         System.out.println(tree.delete1(2));//递归删除
         System.out.println(tree);
     }
 
+    @Test
+    public void less_greater_between() {
+         /*
+                            4
+                          /   \
+                         2     7
+                        / \   / \
+                       1   3 6   9
+                            /   / \
+                           5   8   10
+                                     \
+                                     11
+         */
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n8 = new BSTTree1.BSTNode(8, 8);
+        BSTTree1.BSTNode n11 = new BSTTree1.BSTNode(11, 11);
+        BSTTree1.BSTNode n10 = new BSTTree1.BSTNode(10, 10, null, n11);
+        BSTTree1.BSTNode n9 = new BSTTree1.BSTNode(9, 9, n8, n10);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, n9);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
+        BSTTree1 tree = new BSTTree1();
+        tree.root = root1;
+        System.out.println(Arrays.toString(tree.between(2, 9).toArray()));
+        System.out.println(Arrays.toString(tree.between(8, 5).toArray()));
+        System.out.println(Arrays.toString(tree.greater(5).toArray()));
+        System.out.println(Arrays.toString(tree.greater(12).toArray()));
+        System.out.println(Arrays.toString(tree.less(6).toArray()));
+        System.out.println(Arrays.toString(tree.less(0).toArray()));
+    }
 
 }
