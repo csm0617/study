@@ -1,6 +1,8 @@
 package com.csm.study.binary_search_tree;
 
 import com.csm.study.datastructure.bianry_search_tree.structure.BSTTree1;
+import com.fasterxml.jackson.core.sym.Name3;
+import jdk.nashorn.internal.objects.NativeFloat64Array;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
@@ -84,5 +86,29 @@ public class TestBSTTree1 {
         System.out.println(tree.successor(2));
         System.out.println(tree.predecessor(2));
         System.out.println(tree.predecessor(3));
+    }
+
+    @Test
+    public void delete2(){
+        /*
+                            4
+                          /   \
+                         2     7
+                        / \   /
+                       1   3 6
+                            /
+                           5
+         */
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1,1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3,3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2,2,n1, n3);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5,5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6,6,n5,null);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7,7,n6,null);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4,4,n2,n7);
+        BSTTree1 tree = new BSTTree1();
+        tree.root=root1;
+        System.out.println(tree.delete(7));
+        System.out.println(tree.get(7));
     }
 }
