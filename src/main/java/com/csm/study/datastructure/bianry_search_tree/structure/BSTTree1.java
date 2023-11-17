@@ -454,23 +454,41 @@ public class BSTTree1 {
 
     /**
      * @param key 关键字
-     * @return 大于key的所有value
+     * @return 大于key的所有value（反中序遍历优化）
      */
     public List<Object> greater(int key) {
+//        List<Object> result = new LinkedList<>();
+//        BSTNode p = root;
+//        LinkedList<BSTNode> stack = new LinkedList<>();
+//        while (p != null || !stack.isEmpty()) {
+//            if (p != null) {
+//                stack.push(p);
+//                p = p.left;
+//            } else {//p左边都处理完了
+//                //处理值
+//                BSTNode pop = stack.pop();
+//                if (pop.key > key) {
+//                    result.add(pop.value);
+//                }//这里不能break，因为pop的右侧还存在比key更大的
+//                p = pop.right;
+//            }
+//        }
         List<Object> result = new LinkedList<>();
         BSTNode p = root;
         LinkedList<BSTNode> stack = new LinkedList<>();
         while (p != null || !stack.isEmpty()) {
             if (p != null) {
                 stack.push(p);
-                p = p.left;
+                p = p.right;
             } else {//p左边都处理完了
                 //处理值
                 BSTNode pop = stack.pop();
                 if (pop.key > key) {
                     result.add(pop.value);
-                }//这里不能break，因为pop的右侧还存在比key更大的
-                p = pop.right;
+                }else {//（中序遍历找比key大的必须整个树都要遍历一遍）但是反中序遍历是降序排列的，当遇到比key小的就可以break了
+                    break;
+                }
+                p = pop.left;
             }
         }
         return result;
