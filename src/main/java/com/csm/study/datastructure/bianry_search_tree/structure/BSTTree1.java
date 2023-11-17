@@ -31,6 +31,44 @@ public class BSTTree1 {
         }
     }
 
+    @Override
+    public String toString() {
+        if (root == null) {
+            return "";
+        }
+        LinkedList<BSTNode> queue = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        sb.append("----------------二叉搜索树层序遍历----------------\n");
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            /*
+                二叉树的层序遍历难度在于：如何对每一层的元素进行分层？
+                这里很巧妙利用了队列
+                一开始把根节点加入到队列中 size==1
+                当经过size.for()循环时把队列里的元素出队，同时把下一层的元素又全部都加入到了队列中，size==下一层元素的个数
+                然后又经过size.for把队列里的元素出队，把下一层元素全部入队，size始终表示着下一层元素的个数，当个数为0就结束循环了，此时也遍历完了
+             */
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                BSTTree1.BSTNode poll = queue.pop();
+//                System.out.printf("%-4d", poll.val);
+                sb.append(poll.value).append("\t");
+                if (poll.left != null) {
+                    queue.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    queue.offer(poll.right);
+                }
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    public void minDepth(BSTTree1.BSTNode root) {
+
+    }
+
     /**
      * 根据关键字查找对应值(递归)
      *
