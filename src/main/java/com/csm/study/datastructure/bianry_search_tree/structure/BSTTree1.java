@@ -2,6 +2,9 @@ package com.csm.study.datastructure.bianry_search_tree.structure;
 
 import com.csm.study.datastructure.binarytree.structure.TreeNode;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class BSTTree1 {
     public BSTNode root;//根节点
 
@@ -261,7 +264,7 @@ public class BSTTree1 {
     }
 
     /**
-     * 根据关键字删除
+     * 根据关键字删除（非递归）
      *
      * @param key 关键字
      * @return 被删除关键字对应值
@@ -328,6 +331,61 @@ public class BSTTree1 {
         }
         return p.value;
     }
+
+    /**
+     * 根据关键字删除（递归）
+     *
+     * @param key 关键字
+     * @return 被删除关键字对应值
+     */
+    public Object delete1(int key) {
+        ArrayList<Object> result = new ArrayList<>();//只是为了记录找到被删除的值
+        root = doDelete(this.root, key, result);
+        return result.isEmpty() ? null : result.get(0);
+
+    }
+
+    /**
+     * @param node 根节点位置
+     * @param key  被删除值得关键字key
+     * @return 删剩下的孩子或者 null
+     */
+    private BSTNode doDelete(BSTNode node, int key, ArrayList<Object> result) {
+        //找不到一直递归，直到node为null
+        if (node == null) {
+            return null;
+        }
+        if (node.key > key) {
+            node.left = doDelete(node.left, key, result);
+            return node;
+        }
+        if (node.key < key) {
+            node.right = doDelete(node.right, key, result);
+            return node;
+        }
+        //找到了，分为3种情况
+        result.add(node.value);//记录被删除的节点的值
+        // 情况1，只有右孩子
+        if (node.left == null) {
+            return node.right;//返回给上次的递归建立父子关系
+        }
+        // 情况2，只有左孩子
+        if (node.right == null) {
+            return node.left;//返回给上次的递归建立父子关系
+        }
+        //情况3，既有左孩子，又有右孩子,那么找他的后继
+        BSTNode s = node.right;
+        while (s.left != null) {
+            s = s.left;
+        }
+        //如果后继是不相邻的，先处理后继的后事
+        s.right = doDelete(node.right, s.key, new ArrayList<>()); //作为后继s的右孩子（因为这里是在做后继节点的善后，所以随便new 一个 new ArrayList<>()，不做任何记录）
+        //同时把
+        s.left = node.left;
+
+        return s;
+    }
+
 
     /**
      * 托孤方法
