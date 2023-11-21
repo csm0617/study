@@ -159,7 +159,8 @@ public class AVLTree {
 
     /**
      * 新增节点（递归）
-     * @param key 待新增节点的key
+     *
+     * @param key   待新增节点的key
      * @param value 新增节点的value
      */
     public void put(int key, Object value) {
@@ -168,8 +169,9 @@ public class AVLTree {
 
     /**
      * 新增节点，key存在就更新，不存在就新增
-     * @param node 递归的起点
-     * @param key 待新增节点的key
+     *
+     * @param node  递归的起点
+     * @param key   待新增节点的key
      * @param value 新增节点的value
      * @return 根节点
      */
@@ -189,6 +191,52 @@ public class AVLTree {
             node.right = doPut(node.right, key, value);//向右
         }
         updateHeight(node);
+        return balance(node);//平衡后可能会更新根节点
+    }
+
+
+    public void remove(int key) {
+        root = doRemove(root, key);
+    }
+
+    /**
+     * @param node 每次递归的开始节点
+     * @param key  要删除的节点的关键字
+     * @return !!!每次递归返回的是删剩下的节点
+     */
+    private AVLNode doRemove(AVLNode node, int key) {
+        //1.node == null
+        if (node == null) {
+            return null;
+        }
+        //2.没有找到key
+        if (node.key > key) {
+            node.left = doRemove(node.left, key);
+        } else if (node.key < key) {
+            node.right = doRemove(node.right, key);
+        } else {//3.找到key  1）没有孩子  2）只有一个孩子  3）有两个孩子
+            if (node.left == null && node.right == null) {//没有孩子
+                return null;
+            } else if (node.left == null) {//只有右孩子
+                node = node.right;//这里需要把右孩子要先寄存在node里，方便等下更新高度和balance
+            } else if (node.right == null) {//只有左孩子
+                node = node.left;
+            } else {//左右孩子都有
+                //找后继节点顶替自己的位置
+                AVLNode s = node.right;
+                while (s.left != null) {
+                    s = s.left;
+                }
+                //while结束s是node后继节点
+                //处理s节点的后事
+                s.right = doRemove(node.right, s.key);
+                s.left = node.left;
+                node = s;//s代替了被删除的节点
+            }
+        }
+        //4.更新高度
+        updateHeight(node);
+        //5.balance
         return balance(node);
     }
 }
