@@ -32,6 +32,8 @@ public class AVLTree {
         }
     }
 
+    AVLNode root;
+
     //求当前节点的高度
     private int height(AVLNode node) {
         return node == null ? 0 : node.height;
@@ -153,5 +155,40 @@ public class AVLTree {
         }
         //bf是1，0，-1平衡的，直接返回
         return node;
+    }
+
+    /**
+     * 新增节点（递归）
+     * @param key 待新增节点的key
+     * @param value 新增节点的value
+     */
+    public void put(int key, Object value) {
+        root = doPut(root, key, value);
+    }
+
+    /**
+     * 新增节点，key存在就更新，不存在就新增
+     * @param node 递归的起点
+     * @param key 待新增节点的key
+     * @param value 新增节点的value
+     * @return 根节点
+     */
+    private AVLNode doPut(AVLNode node, int key, Object value) {
+        //1.找到空位，新建节点
+        if (node == null) {
+            return new AVLNode(key, value);
+        }
+        //2.key已经存在，更新value
+        if (node.key == key) {
+            node.val = value;
+        }
+        //3.继续查找
+        if (key < node.key) {
+            node.left = doPut(node.left, key, value);//向左
+        } else {
+            node.right = doPut(node.right, key, value);//向右
+        }
+        updateHeight(node);
+        return balance(node);
     }
 }
