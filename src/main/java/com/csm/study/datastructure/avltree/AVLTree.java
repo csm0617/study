@@ -120,4 +120,38 @@ public class AVLTree {
         node.right = rightRotate(node.right);
         return leftRotate(node);
     }
+
+    /**
+     * 检查节点是否失衡，重新平衡
+     *
+     * @param node 节点
+     * @return 平衡后的节点或者null
+     */
+    private AVLNode balance(AVLNode node) {
+        if (node == null) {
+            return null;
+        }
+        int bf = bf(node);
+        /*
+                        6                        6  (删除7后失衡)      右旋：       3
+                      /  \                      /                               / \
+                     3    7                    3                               1   6
+                    / \                       / \                                 /
+                   1   4                     1   4                               4
+             删除会有细节问题，删除7后，6的左右高度失衡了，此时3的bf为0，不符合bf(node.left) > 0的情况，但是通过右旋可以解决
+             所以归为LL类，bf > 1 && bf(node.left) >= 0，同理bf < -1 && bf(node.left) <= 0 归为RR
+         */
+        //区分LR、LL、RL、RR四种情况
+        if (bf > 1 && bf(node.left) >= 0) {//bf>1,左子树失衡L，bf(node.left) > 0，节点左孩子的左子树更高L，所以LL失衡(注意删除后为0)
+            return rightRotate(node);//LL失衡，右旋
+        } else if (bf > 1 && bf(node.left) < 0) {//bf>1,左子树失衡L，bf(node.left) < 0，节点左孩子的右子树更高R，所以LR失衡
+            return leftRightRotate(node);//LR失衡，左右旋
+        } else if (bf < -1 && bf(node.right) > 0) {//bf>1,右子树失衡R,bf(node.right) > 0，节点右孩子的左子树更高L，所以RL失衡
+            return rightLeftRotate(node);//RL失衡，右左旋
+        } else if (bf < -1 && bf(node.right) <= 0) {//bf>1,右子树失衡R,bf(node.right) < 0，节点右孩子的右子树更高R，所以RR失衡(注意删除可能为0)
+            return leftRotate(node);//RR失衡，左旋
+        }
+        //bf是1，0，-1平衡的，直接返回
+        return node;
+    }
 }
