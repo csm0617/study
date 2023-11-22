@@ -247,10 +247,216 @@ public class RedBlackTree {
             grandparent.color = RED;
             leftRotate(grandparent);
         }
-
-
     }
 
+    /**
+     * 查找节点
+     *
+     * @param key 键
+     * @return 找到返回节点，找不到返回null
+     */
+    private Node find(int key) {
+        Node p = root;
+        while (p != null) {
+            if (key < p.key) {
+                p = p.left;
+            } else if (key > p.key) {
+                p = p.right;
+            } else {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据被删除节点，查找剩下的节点
+     *
+     * @param deleted 被删除节点
+     * @return 删剩下的节点
+     */
+    private Node findReplaced(Node deleted) {
+        if (deleted.left == null && deleted.right == null) {//删除的delete是叶子节点
+            return null;
+        }
+        if (deleted.left == null) {//左孩子为空
+            return deleted.right;//返回右孩子
+        }
+        if (deleted.right == null) {//右孩子为空
+            return deleted.left;//返回左孩子
+        }
+        //deleted左右孩子都有
+        //找deleted的后继s
+        Node s = deleted.right;//寻找的起点
+        while (s.left != null) {
+            s = s.left;
+        }
+        return s;//s肯定只有右孩子
+    }
+
+    /**
+     * 正常删、会用到李代桃僵技巧、遇到黑黑不平衡进行调整
+     *
+     * @param key 键
+     */
     public void remove(int key) {
+        Node deleted = find(key);
+        if (deleted == null) {
+            return;
+        }
+        doRemove(deleted);
+    }
+
+    private void doRemove(Node deleted) {
+        /*
+            两件事情分别做，不要既在处理删除的问题的时候，又想着怎么处理颜色的问题
+            先处理删除节点的情况，再在考虑处理颜色问题
+            //被删除的是根节点
+
+
+            被删除的节点是叶子节点
+                1.如果是黑色的，那肯定要处理颜色问题，删了一个黑色叶子节点，到这个黑色叶子节点的路径就会少1（null也可被视为黑，双黑）
+
+                    这种情况下还有一种简单的case，如果兄弟节点也是黑色，那么就把父节点变黑，兄弟节点变红
+
+                2.如果是红色的，不会造成颜色失衡，不做处理
+            被删除的节点不是叶子节点,且被删除的节点只有一个孩子
+                1.如果被删除的节点是黑色，孩子（也就是剩下的节点replaced）也是黑色，需要进行复杂处理（双黑）
+                2.case2如果被删除的节点是黑色，孩子（也就是剩下的节点replaced）是红色，那么李代桃僵
+         */
+
+        Node replaced = findReplaced(deleted);
+        Node parent = deleted.parent;//被删节点的父节点
+        //deleted没有孩子
+        if (replaced == null) {
+            //case1:删除的是根节点
+            //如果deleted的是根节点，且没有孩子
+            if (deleted == root) {
+                root = null;
+            } else {//不是根节点（因为没有孩子，只能是叶子节点）
+                if (isBlack(deleted)) {//是黑色的叶子节点,触发双黑
+                    //复杂调整,注意调用实际先调整deleted了，再删除deleted
+                    fixDoubleBlack(deleted);
+                } else {
+                    //红色叶子不会失衡，不用任何处理
+                }
+                if (deleted.isLeftChild()) {
+                    parent.left = null;
+                } else {
+                    parent.right = null;
+                }
+                deleted.parent = null;//help gc
+            }
+            return;
+        }
+        //deleted有一个孩子
+        if (deleted.left == null || deleted.right == null) {
+            //case1:删除的是根节点
+            //如果deleted的是根节点，且只有一个孩子（说明这个孩子只能是红色）
+            if (deleted == root) {
+                //让孩子的k,v替换掉root的k,v
+                root.key = replaced.key;
+                root.value = replaced.value;
+                root.left = root.right = null;//这里也不讨论root是只有左孩子还是右孩子，统统置null
+            } else {//不是根节点，有一个孩子，就建立deleted的父亲parent和孩子replaced的双向关系
+                if (deleted.isLeftChild()) {
+                    parent.left = replaced;
+                } else {
+                    parent.right = replaced;
+                }
+                replaced.parent = parent;
+                deleted.parent = deleted.left = deleted.right = null;//help gc
+                if (isBlack(deleted) && isBlack(replaced)) {//如果被删除的节点是黑色，另外一个孩子也是黑色
+                    //复杂处理,注意调用实际，先删除了再调整，处理的是replaced
+                    fixDoubleBlack(replaced);
+                } else {//删的是黑 剩下的 是红
+                    replaced.color = BLACK;//变成黑色
+                }
+
+            }
+            return;
+        }
+        //case0 有两个孩子  转化为 ===> 有一个孩子 或者 没有孩子
+        // 因为当deleted有两个孩子的时候，findReplaced返回的是他的后继s,s肯定没有左孩子，可能会有右孩子
+        int t = deleted.key;
+        deleted.key = replaced.key;
+        replaced.key = t;
+
+        Object v = deleted.value;
+        deleted.value = replaced.value;
+        replaced.value = v;
+        doRemove(replaced);
+    }
+
+    /**
+     * 处理双黑的情况（双黑），因为双黑删除了一个黑色节点，就会导致性质5路径上黑色节点少1
+     *
+     * @param x 待调整节点
+     */
+    //case3、case4、case5
+    private void fixDoubleBlack(Node x) {
+        if (x == root) {//调整到树的顶部了，停止递归
+            return;
+        }
+        Node parent = x.parent;//父亲
+        Node sibling = x.sibling();//兄弟
+        //case3:被调整的节点的兄弟为红，那么两个侄子定为黑
+        //要处理case3要先把case3转换成case4或者case5处理，最终处理的是case4或case5
+        if (isRed(sibling)) {
+            if (x.isLeftChild()) {
+                leftRotate(parent);
+            } else {
+                rightRotate(parent);
+            }
+            parent.color = RED;//父节点换色
+            sibling.color = BLACK;//兄弟换色
+            //---------case3转换成了case4或者case5----------------
+            fixDoubleBlack(x);//处理case4或者case5的情况
+        }
+        //case4:被调整节点的兄弟为黑，两个侄子都为黑
+        if (sibling != null) {
+            /*
+                4.1 将兄弟变为红，目的是将删除节点和兄弟那边的黑色高度同时-1
+                4.2 如果父亲也是红色，则需要将父亲变黑，避免出现红红，此时路径黑色节点数目不变
+                4.3 如果父亲是黑，说明这条路径还是少黑，再次让父节点触发双黑，将上一层的高度-1达到平衡（可能存在递归）
+             */
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                sibling.color = RED;
+                if (isRed(parent)) {
+                    parent.color = BLACK;
+                } else {
+                    fixDoubleBlack(parent);
+                }
+            } else {//case5:被调整节点的兄弟为黑，至少一个红侄子
+                //LL
+                if (sibling.isLeftChild() && isBlack(sibling.left)) {
+                    rightRotate(parent);
+                    sibling.left.color = BLACK;
+                    sibling.color = parent.color;
+                }
+                //LR => LL
+                else if (sibling.isLeftChild() && isRed(sibling.right)) {
+                    sibling.right.color = parent.color;
+                    leftRotate(sibling);
+                    rightRotate(parent);
+                }
+                //RL
+                else if (!sibling.isLeftChild() && isRed(sibling.left)) {
+                    sibling.left.color = parent.color;
+                    rightRotate(sibling);
+                    leftRotate(parent);
+                } else {
+                    leftRotate(parent);
+                    sibling.right.color = BLACK;
+                    sibling.color = parent.color;
+                }
+                parent.color = BLACK;
+
+            }
+        } else {
+            fixDoubleBlack(parent);
+        }
+
+
     }
 }
